@@ -27,12 +27,14 @@ final class Foo
 
 ## Usage
 
-Create dual reader instance.
+Create the reader instance.
 
-    $reader = new DualReader(
-        new AnnotationReader(),
-        new AttributesReader()
-    );
-    assert($reader instanceof Reader);
+```php
+$reader = new DualReader(
+    new AnnotationReader(),
+    new AttributesReader()
+);
+assert($reader instanceof Reader);
+```
 
 The reader can read boht annotations and attributes.
