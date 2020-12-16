@@ -17,7 +17,7 @@ However, This reader help you to code forward compatible that supports both PHP 
 Add `#[Attribute]` attribute to exsiting doctrine annotation.
 This annotation can be instantiated by PHP8 attribute or `doctrine/annotations` in php7+.
 
-```php
+```diff
 use Attribute;
 
 +#[Attribute]
