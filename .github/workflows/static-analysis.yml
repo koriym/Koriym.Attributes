@@ -101,7 +101,7 @@ jobs:
     strategy:
       matrix:
         php-version:
-          - '7.4'
+          - '8.0'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -123,7 +123,7 @@ jobs:
       - name: Install dependencies with Composer
         run: |
           composer install --no-interaction --no-progress --prefer-dist
-          composer global require --dev maglnet/composer-require-checker ^2.0
+          composer global require --dev --ignore-platform-reqs maglnet/composer-require-checker
       - name: Run composer-require-checker
         run: >-
           composer global exec -v -- composer-require-checker check
