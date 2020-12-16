@@ -21,9 +21,10 @@ final class AttributesReader implements Reader
         // TODO: Implement getClassAnnotations() method.
     }
 
-    public function getClassAnnotation(ReflectionClass $class, $annotationName): void
+    public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
-        // TODO: Implement getClassAnnotation() method.
+        $attribute = $class->getAttributes($annotationName);
+        return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
     }
 
     public function getMethodAnnotation(ReflectionMethod $method, $annotationName): void

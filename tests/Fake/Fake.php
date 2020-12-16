@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace Koriym\Attributes;
 
+use Koriym\Attributes\Annotation\Assisted;
+use Koriym\Attributes\Annotation\Cacheable;
+use Koriym\Attributes\Annotation\HttpCache;
+use Koriym\Attributes\Annotation\Inject;
+use Koriym\Attributes\Annotation\Loggable;
+use Koriym\Attributes\Annotation\Named;
+use Koriym\Attributes\Annotation\PaidMemberOnly;
+use Koriym\Attributes\Annotation\Transactional;
+
+#[PaidMemberOnly]
 #[Cacheable]
 class Fake
 {
@@ -13,7 +23,6 @@ class Fake
     {
     }
 
-    #[PaidMemberOnly]
     #[Transactional]
     #[Loggable]
     #[HttpCache(isPrivate: true, maxAge: 50)]
