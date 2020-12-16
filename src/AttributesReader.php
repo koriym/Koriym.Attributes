@@ -10,11 +10,25 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+use function assert;
+use function is_string;
+
 final class AttributesReader implements Reader
 {
-    public function getMethodAnnotations(ReflectionMethod $method): void
+    /**
+     * {@inheritDoc}
+     */
+    public function getMethodAnnotations(ReflectionMethod $method): array
     {
-        // TODO: Implement getMethodAnnotations() method.
+        $attributesRefs = $method->getAttributes();
+        $attributes = [];
+        foreach ($attributesRefs as $ref) {
+            if ($ref instanceof ReflectionAttribute) {
+                $attributes[] = $ref->newInstance();
+            }
+        }
+
+        return $attributes;
     }
 
     /**
@@ -43,18 +57,40 @@ final class AttributesReader implements Reader
         return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
     }
 
-    public function getMethodAnnotation(ReflectionMethod $method, $annotationName): void
+    /**
+     * {@inheritDoc}
+     */
+    public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
     {
-        // TODO: Implement getMethodAnnotation() method.
+        $attribute = $method->getAttributes($annotationName);
+
+        return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
     }
 
-    public function getPropertyAnnotations(ReflectionProperty $property): void
+    /**
+     * {@inheritDoc}
+     */
+    public function getPropertyAnnotations(ReflectionProperty $property): array
     {
-        // TODO: Implement getPropertyAnnotations() method.
+        $attributesRefs = $property->getAttributes();
+        $attributes = [];
+        foreach ($attributesRefs as $ref) {
+            if ($ref instanceof ReflectionAttribute) {
+                $attributes[] = $ref->newInstance();
+            }
+        }
+
+        return $attributes;
     }
 
-    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): void
+    /**
+     * {@inheritDoc}
+     */
+    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
-        // TODO: Implement getPropertyAnnotation() method.
+        assert(is_string($annotationName));
+        $attribute = $property->getAttributes($annotationName);
+
+        return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
     }
 }

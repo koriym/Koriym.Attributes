@@ -18,7 +18,10 @@ use Koriym\Attributes\Annotation\Transactional;
 class Fake
 {
     #[Inject]
+    #[PaidMemberOnly]
+    public $prop;
 
+    #[Inject]
     public function setKey(#[Named('auth_key')] string $authKey): void // named binding
     {
     }
@@ -26,7 +29,6 @@ class Fake
     #[Transactional]
     #[Loggable]
     #[HttpCache(isPrivate: true, maxAge: 50)]
-
     public function subscribe(string $id): void  // intercepted
     {
     }
