@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Koriym\Attributes;
 
+use Doctrine\Common\Annotations\Reader;
 use Koriym\Attributes\Annotation\Cacheable;
+use Koriym\Attributes\Annotation\Foo;
 use Koriym\Attributes\Annotation\HttpCache;
 use Koriym\Attributes\Annotation\Inject;
 use Koriym\Attributes\Annotation\Loggable;
-use Koriym\Attributes\Annotation\PaidMemberOnly;
 use Koriym\Attributes\Annotation\Transactional;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -20,9 +21,9 @@ use function assert;
 use function class_exists;
 use function get_class;
 
-class AttributesTest extends TestCase
+class AttributeReaferTest extends TestCase
 {
-    protected AttributesReader $reader;
+    protected Reader $reader;
 
     protected function setUp(): void
     {
@@ -51,7 +52,7 @@ class AttributesTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [PaidMemberOnly::class, Cacheable::class];
+        $expected = [Foo::class, Cacheable::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
@@ -91,7 +92,7 @@ class AttributesTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [Inject::class, PaidMemberOnly::class];
+        $expected = [Inject::class, Foo::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 }

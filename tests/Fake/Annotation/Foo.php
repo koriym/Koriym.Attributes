@@ -7,6 +7,6 @@ namespace Koriym\Attributes\Annotation;
 use Attribute;
 
 #[Attribute]
-final class PaidMemberOnly
+final class Foo
 {
 }

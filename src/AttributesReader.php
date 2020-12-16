@@ -5,13 +5,9 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
-
-use function assert;
-use function is_string;
 
 final class AttributesReader implements Reader
 {
@@ -23,25 +19,27 @@ final class AttributesReader implements Reader
         $attributesRefs = $method->getAttributes();
         $attributes = [];
         foreach ($attributesRefs as $ref) {
-            if ($ref instanceof ReflectionAttribute) {
-                $attributes[] = $ref->newInstance();
-            }
+            $attributes[] = $ref->newInstance();
         }
 
         return $attributes;
     }
 
     /**
-     * {@inheritDoc}
+     * @psalm-param ReflectionClass $class
+     * @phpstan-param ReflectionClass<object> $class
+     *
+     * @return array<object>
+     *
+     * @template T of object
      */
     public function getClassAnnotations(ReflectionClass $class): array
     {
         $attributesRefs = $class->getAttributes();
         $attributes = [];
         foreach ($attributesRefs as $ref) {
-            if ($ref instanceof ReflectionAttribute) {
-                $attributes[] = $ref->newInstance();
-            }
+            $attribute = $ref->newInstance();
+            $attributes[] = $attribute;
         }
 
         return $attributes;
@@ -49,12 +47,22 @@ final class AttributesReader implements Reader
 
     /**
      * {@inheritDoc}
+     *
+     * @param class-string<T> $annotationName
+     * @psalm-param ReflectionClass $class
+     * @phpstan-param ReflectionClass<object> $class
+     *
+     * @return T
+     *
+     * @template T of object
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
-        $attribute = $class->getAttributes($annotationName);
+        $attributes = $class->getAttributes($annotationName);
+        /** @var T $object */
+        $object = isset($attributes[0]) ? $attributes[0]->newInstance() : null;
 
-        return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
+        return $object;
     }
 
     /**
@@ -75,9 +83,7 @@ final class AttributesReader implements Reader
         $attributesRefs = $property->getAttributes();
         $attributes = [];
         foreach ($attributesRefs as $ref) {
-            if ($ref instanceof ReflectionAttribute) {
-                $attributes[] = $ref->newInstance();
-            }
+            $attributes[] = $ref->newInstance();
         }
 
         return $attributes;
@@ -85,12 +91,19 @@ final class AttributesReader implements Reader
 
     /**
      * {@inheritDoc}
+     *
+     * @param class-string<T> $annotationName
+     *
+     * @return T|null
+     *
+     * @template T of object
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
-        assert(is_string($annotationName));
         $attribute = $property->getAttributes($annotationName);
+        /** @var T $object */
+        $object = isset($attribute[0]) ? $attribute[0]->newInstance() : null;
 
-        return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
+        return $object;
     }
 }
