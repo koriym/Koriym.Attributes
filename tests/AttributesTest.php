@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Koriym\Attributes\Annotation\Cacheable;
+use Koriym\Attributes\Annotation\PaidMemberOnly;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -26,12 +27,20 @@ class AttributesTest extends TestCase
         $this->assertInstanceOf(AttributesReader::class, $actual);
     }
 
-    public function testGetClassAnnotation(): void
+    public function testGetClassAnnotationItem(): void
     {
         $class = new ReflectionClass(Fake::class);
         $annotationName = Cacheable::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getClassAnnotation($class, $annotationName);
         $this->assertInstanceOf(Cacheable::class, $cacheable);
+    }
+
+    public function testGetClassAnnotationList(): void
+    {
+        $class = new ReflectionClass(Fake::class);
+        $attributes = $this->reader->getClassAnnotations($class);
+        $expected = [new PaidMemberOnly(), new Cacheable()];
+        $this->assertEqualsCanonicalizing($expected, $attributes);
     }
 }

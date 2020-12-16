@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -16,14 +17,29 @@ final class AttributesReader implements Reader
         // TODO: Implement getMethodAnnotations() method.
     }
 
-    public function getClassAnnotations(ReflectionClass $class): void
+    /**
+     * {@inheritDoc}
+     */
+    public function getClassAnnotations(ReflectionClass $class): array
     {
-        // TODO: Implement getClassAnnotations() method.
+        $attributesRefs = $class->getAttributes();
+        $attributes = [];
+        foreach ($attributesRefs as $ref) {
+            if ($ref instanceof ReflectionAttribute) {
+                $attributes[] = $ref->newInstance();
+            }
+        }
+
+        return $attributes;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
         $attribute = $class->getAttributes($annotationName);
+
         return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
     }
 
