@@ -19,6 +19,7 @@ This annotation can be instantiated by PHP8 attribute or `doctrine/annotations` 
 
 ```php
 use Attribute;
+
 #[Attribute]
 final class Foo
 {
