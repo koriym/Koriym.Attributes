@@ -13,15 +13,15 @@ use const PHP_VERSION_ID;
 
 final class DualReader implements Reader
 {
-    private bool $php8;
+    /** @var bool */ private $php8;
+    /** @var Reader */ private $annotationReaedr;
+    /** @var Reader */ private $attributeReader;
 
-    public function __construct(
-        // phpcs:disable
-        private Reader $annotationReaedr,
-        private Reader $attributeReader
-        // phpcs:enable
-    ) {
+    public function __construct(Reader $annotationReaedr, Reader $attributeReader)
+    {
         $this->php8 = PHP_VERSION_ID >= 80000;
+        $this->annotationReaedr = $annotationReaedr;
+        $this->attributeReader = $attributeReader;
     }
 
     /**
