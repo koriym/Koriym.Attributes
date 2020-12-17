@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.3 || ^8.0",
         "doctrine/annotations": "^1.11"
     },
     "require-dev": {
