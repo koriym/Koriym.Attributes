@@ -12,6 +12,20 @@ However, This reader help you to code forward compatible that supports both PHP 
 
     composer require koriym/attributes
 
+## Usage
+
+Create the reader instance.
+
+```php
+$reader = new DualReader(
+    new AnnotationReader(),
+    new AttributesReader()
+);
+assert($reader instanceof Reader);
+```
+
+The reader can read boht annotations and attributes.
+
 ## Compatible Annotation
 
 Existing doctrine annotations can be changed into annotations that work for both doctrine annotation and PHP8 attributes.
@@ -49,17 +63,3 @@ final class Foo
 First argument `$valie` is used only by `doctrine/annotations`.
 The rest of arguments(`$bar`, `$baz`) are for PHP8 attribute.
 Those arguments needs default value for the case in `doctrine/annotations`.
-
-## Usage
-
-Create the reader instance.
-
-```php
-$reader = new DualReader(
-    new AnnotationReader(),
-    new AttributesReader()
-);
-assert($reader instanceof Reader);
-```
-
-The reader can read boht annotations and attributes.
