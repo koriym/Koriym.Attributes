@@ -1,6 +1,6 @@
 # Koriym.Attributes
 
-A `koriym/attributes` dual reader implemets doctrine/annotation [Reader](https://github.com/doctrine/annotations/blob/master/lib/Doctrine/Common/Annotations/Reader.php) interface
+A `koriym/attributes` dual reader implements doctrine/annotation [Reader](https://github.com/doctrine/annotations/blob/master/lib/Doctrine/Common/Annotations/Reader.php) interface
 in order to read both doctrine/annotation and PHP 8 attributes.
 
 Note:  Doctrine annotations are different by design than PHP core one. 
