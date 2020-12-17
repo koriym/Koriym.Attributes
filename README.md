@@ -12,10 +12,11 @@ However, This reader help you to code forward compatible that supports both PHP 
 
     composer require koriym/attributes
 
-## Update Annotation
+## Compatible Annotation
 
-Add `#[Attribute]` attribute to existing doctrine annotation.
-This annotation can be instantiated by PHP8 attribute or `doctrine/annotations` in php7+.
+Existing doctrine annotations can be changed into annotations that work for both doctrine annotation and PHP8 attributes.
+
+Add `#[Attribute]` attribute.
 
 ```diff
 use Attribute;
@@ -26,7 +27,7 @@ final class Foo
 }
 ```
 
-Add constructor when annotation has properties.
+Then add constructor when annotation has properties.
 Following example works with both PHP8 attribute and `doctrine/annotations` in php7+.
 
 ```diff
@@ -47,7 +48,7 @@ final class Foo
 
 First argument `$valie` is used only by `doctrine/annotations`.
 The rest of arguments(`$bar`, `$baz`) are for PHP8 attribute.
-Those needs default value for the case in `doctrine/annotations`.
+Those arguments needs default value for the case in `doctrine/annotations`.
 
 ## Usage
 
