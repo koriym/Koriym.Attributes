@@ -36,8 +36,8 @@ use Attribute;
 +#[Attribute]
 final class Foo
 {
-    public string $bar
-    public int $baz
+    public string $bar;
+    public int $baz;
 +    public function __construct(array $value = [], string $bar = '', int $baz = 0)
 +    {
 +        $this->foo = $valie['bar'] ?? $bar;
