@@ -3,7 +3,7 @@
 A `koriym/attributes` dual reader implements doctrine/annotation [Reader](https://github.com/doctrine/annotations/blob/master/lib/Doctrine/Common/Annotations/Reader.php) interface
 in order to read both doctrine/annotation and PHP 8 attributes.
 
-Note:  Doctrine annotations are different by design than PHP core one. 
+Doctrine annotations are different by design than PHP core one. 
 Not all attributes can be read by this reader (ex. parameters), and not all doctrine/annotations can be read by this reader either. (ex. nested annotations)
 
 However, This reader help you to code forward compatible that supports both PHP 7.x annotations and 8.x attributes in certain senario.
