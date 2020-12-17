@@ -23,7 +23,7 @@ final class DualReader implements Reader
         private Reader $attributeReader
         // phpcs:enable
     ) {
-        $this->php8 =  version_compare(PHP_VERSION, '8.0.0') >= 0;
+        $this->php8 = \PHP_VERSION_ID >= 80000;
     }
 
     /**
