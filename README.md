@@ -40,8 +40,8 @@ final class Foo
     public int $baz;
 +    public function __construct(array $value = [], string $bar = '', int $baz = 0)
 +    {
-+        $this->foo = $valie['bar'] ?? $bar;
-+        $this->foo = $valie['baz'] ?? $baz;
++        $this->bar = $valie['bar'] ?? $bar;
++        $this->baz = $valie['baz'] ?? $baz;
 +    }
 }
 ```
