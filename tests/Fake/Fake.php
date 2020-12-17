@@ -6,7 +6,7 @@ namespace Koriym\Attributes;
 
 use Koriym\Attributes\Annotation\Assisted;
 use Koriym\Attributes\Annotation\Cacheable;
-use Koriym\Attributes\Annotation\Foo;
+use Koriym\Attributes\Annotation\FooClass;
 use Koriym\Attributes\Annotation\HttpCache;
 use Koriym\Attributes\Annotation\Inject;
 use Koriym\Attributes\Annotation\Loggable;
@@ -14,12 +14,12 @@ use Koriym\Attributes\Annotation\Named;
 use Koriym\Attributes\Annotation\Transactional;
 use PDO;
 
-#[Foo]
+#[FooClass]
 #[Cacheable]
 class Fake
 {
     #[Inject]
-    #[Foo]
+    #[FooClass]
     public string $prop;
 
     #[Inject]

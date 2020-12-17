@@ -6,6 +6,9 @@ namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 
+/**
+ * Inherit all test of AttributeReaferTest
+ */
 class DualReaderTest extends AttributeReaferTest
 {
     protected function setUp(): void

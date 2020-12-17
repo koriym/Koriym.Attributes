@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
+
+use function interface_exists;
+use function is_subclass_of;
 
 final class AttributesReader implements Reader
 {
@@ -59,20 +63,44 @@ final class AttributesReader implements Reader
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
         $attributes = $class->getAttributes($annotationName);
-        /** @var T $object */
-        $object = isset($attributes[0]) ? $attributes[0]->newInstance() : null;
+        if (isset($attributes[0])) {
+            /** @var T $object */
+            $object = $attributes[0]->newInstance();
 
-        return $object;
+            return $object;
+        }
+
+        if (interface_exists($annotationName)) {
+            return $this->seekInterface($class->getAttributes(), $annotationName);
+        }
+
+        return null;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @param class-string<T> $annotationName
+     *
+     * @return T
+     *
+     * @template T of object
      */
     public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
     {
-        $attribute = $method->getAttributes($annotationName);
+        $attributes = $method->getAttributes($annotationName);
+        if (isset($attributes[0])) {
+            /** @var T $object */
+            $object = $attributes[0]->newInstance();
 
-        return isset($attribute[0]) ? $attribute[0]->newInstance() : null;
+            return $object;
+        }
+
+        if (interface_exists($annotationName)) {
+            return $this->seekInterface($method->getAttributes(), $annotationName);
+        }
+
+        return null;
     }
 
     /**
@@ -100,10 +128,40 @@ final class AttributesReader implements Reader
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
-        $attribute = $property->getAttributes($annotationName);
-        /** @var T $object */
-        $object = isset($attribute[0]) ? $attribute[0]->newInstance() : null;
+        $attributes = $property->getAttributes($annotationName);
+        if (isset($attributes[0])) {
+            /** @var T $object */
+            $object = $attributes[0]->newInstance();
 
-        return $object;
+            return $object;
+        }
+
+        if (interface_exists($annotationName)) {
+            return $this->seekInterface($property->getAttributes(), $annotationName);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<ReflectionAttribute> $attributes
+     * @param class-string<T>            $interface
+     *
+     * @return T|null
+     *
+     * @template T of object
+     */
+    private function seekInterface(array $attributes, string $interface): ?object
+    {
+        foreach ($attributes as $attribute) {
+            if (is_subclass_of($attribute->getName(), $interface)) {
+                /** @var T $object */
+                $object =  $attribute->newInstance();
+
+                return $object;
+            }
+        }
+
+        return null;
     }
 }

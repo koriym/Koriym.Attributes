@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Koriym\Attributes\Annotation\Cacheable;
-use Koriym\Attributes\Annotation\Foo;
+use Koriym\Attributes\Annotation\FooClass;
 use Koriym\Attributes\Annotation\HttpCache;
 use Koriym\Attributes\Annotation\Inject;
 use Koriym\Attributes\Annotation\Loggable;
 use Koriym\Attributes\Annotation\Named;
 use Koriym\Attributes\Annotation\Transactional;
 
-#[Foo]
+#[FooClass]
 #[Cacheable]
 /**
  * @PaidMemberOnly
@@ -21,7 +21,7 @@ use Koriym\Attributes\Annotation\Transactional;
 class FakeDual
 {
     #[Inject]
-    #[Foo]
+    #[FooClass]
     /**
      * @Inject
      * @PaidMemberOnly

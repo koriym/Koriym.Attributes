@@ -6,7 +6,8 @@ namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
 use Koriym\Attributes\Annotation\Cacheable;
-use Koriym\Attributes\Annotation\Foo;
+use Koriym\Attributes\Annotation\FooClass;
+use Koriym\Attributes\Annotation\FooInterface;
 use Koriym\Attributes\Annotation\HttpCache;
 use Koriym\Attributes\Annotation\Inject;
 use Koriym\Attributes\Annotation\Loggable;
@@ -20,6 +21,7 @@ use function array_map;
 use function assert;
 use function class_exists;
 use function get_class;
+use function interface_exists;
 
 class AttributeReaferTest extends TestCase
 {
@@ -52,7 +54,7 @@ class AttributeReaferTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [Foo::class, Cacheable::class];
+        $expected = [FooClass::class, Cacheable::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
@@ -92,7 +94,29 @@ class AttributeReaferTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [Inject::class, Foo::class];
+        $expected = [Inject::class, FooClass::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
+    }
+
+    public function testReadIneterfaceInClass(): void
+    {
+        $a = interface_exists(FooInterface::class);
+        $class = new ReflectionClass(FakeInterfaceRead::class);
+        $annotation = $this->reader->getClassAnnotation($class, FooInterface::class);
+        $this->assertInstanceOf(FooClass::class, $annotation);
+    }
+
+    public function testReadIneterfaceInMethod(): void
+    {
+        $method = new ReflectionMethod(FakeInterfaceRead::class, 'subscribe');
+        $annotation = $this->reader->getMethodAnnotation($method, FooInterface::class);
+        $this->assertInstanceOf(FooClass::class, $annotation);
+    }
+
+    public function testReadIneterfaceInProperty(): void
+    {
+        $class = new ReflectionProperty(FakeInterfaceRead::class, 'prop');
+        $annotation = $this->reader->getPropertyAnnotation($class, FooInterface::class);
+        $this->assertInstanceOf(FooClass::class, $annotation);
     }
 }
