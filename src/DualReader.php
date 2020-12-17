@@ -9,9 +9,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-use function version_compare;
-
-use const PHP_VERSION;
+use const PHP_VERSION_ID;
 
 final class DualReader implements Reader
 {
@@ -23,7 +21,7 @@ final class DualReader implements Reader
         private Reader $attributeReader
         // phpcs:enable
     ) {
-        $this->php8 = \PHP_VERSION_ID >= 80000;
+        $this->php8 = PHP_VERSION_ID >= 80000;
     }
 
     /**
