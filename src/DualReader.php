@@ -14,7 +14,9 @@ use const PHP_VERSION_ID;
 final class DualReader implements Reader
 {
     /** @var bool */ private $php8;
+
     /** @var Reader */ private $annotationReaedr;
+
     /** @var Reader */ private $attributeReader;
 
     public function __construct(Reader $annotationReaedr, Reader $attributeReader)
