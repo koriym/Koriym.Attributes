@@ -45,6 +45,7 @@ class AttributeReaferTest extends TestCase
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getClassAnnotation($class, $annotationName);
         $this->assertInstanceOf(Cacheable::class, $cacheable);
+        $this->assertNull($this->reader->getClassAnnotation($class, FakeNotExists::class));
     }
 
     public function testGetClassAnnotationList(): void
@@ -65,6 +66,7 @@ class AttributeReaferTest extends TestCase
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getMethodAnnotation($method, $annotationName);
         $this->assertInstanceOf($annotationName, $cacheable);
+        $this->assertNull($this->reader->getMethodAnnotation($method, FakeNotExists::class));
     }
 
     public function testGetMethodAnnotation(): void
@@ -85,6 +87,7 @@ class AttributeReaferTest extends TestCase
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getPropertyAnnotation($prop, $annotationName);
         $this->assertInstanceOf($annotationName, $cacheable);
+        $this->assertNull($this->reader->getPropertyAnnotation($prop, FakeNotExists::class));
     }
 
     public function testGetPropertyAnnotationList(): void
@@ -111,6 +114,8 @@ class AttributeReaferTest extends TestCase
         $method = new ReflectionMethod(FakeInterfaceRead::class, 'subscribe');
         $annotation = $this->reader->getMethodAnnotation($method, FooInterface::class);
         $this->assertInstanceOf(FooClass::class, $annotation);
+        $noAttributeMethod = new ReflectionMethod(FakeInterfaceRead::class, 'noAttribute');
+        $this->assertNull($this->reader->getMethodAnnotation($noAttributeMethod, FooInterface::class));
     }
 
     public function testReadIneterfaceInProperty(): void
