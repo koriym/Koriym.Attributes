@@ -62,4 +62,4 @@ final class Foo
 
 First argument `$value` is used only by `doctrine/annotations`.
 The rest of arguments(`$bar`, `$baz`) are for PHP8 attribute.
-Those arguments needs default value for the case in `doctrine/annotations`.
+Those arguments need default value for the case in `doctrine/annotations`.
