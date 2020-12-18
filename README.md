@@ -54,12 +54,12 @@ final class Foo
     public int $baz;
 +    public function __construct(array $value = [], string $bar = '', int $baz = 0)
 +    {
-+        $this->bar = $valie['bar'] ?? $bar;
-+        $this->baz = $valie['baz'] ?? $baz;
++        $this->bar = $value['bar'] ?? $bar;
++        $this->baz = $value['baz'] ?? $baz;
 +    }
 }
 ```
 
-First argument `$valie` is used only by `doctrine/annotations`.
+First argument `$value` is used only by `doctrine/annotations`.
 The rest of arguments(`$bar`, `$baz`) are for PHP8 attribute.
 Those arguments needs default value for the case in `doctrine/annotations`.
