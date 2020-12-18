@@ -56,9 +56,11 @@ final class AttributesReader implements Reader
      * @psalm-param ReflectionClass $class
      * @phpstan-param ReflectionClass<object> $class
      *
-     * @return T
+     * @psalm-return object|null
+     * @phpstan-return T
      *
      * @template T of object
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
