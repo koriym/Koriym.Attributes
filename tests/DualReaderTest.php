@@ -18,7 +18,7 @@ class DualReaderTest extends AttributeReaderTest
     {
         $this->reader = new DualReader(
             new AnnotationReader(),
-            new AttributesReader()
+            new AttributeReader()
         );
     }
 
