@@ -13,7 +13,7 @@ use ReflectionProperty;
 use function interface_exists;
 use function is_subclass_of;
 
-final class AttributesReader implements Reader
+final class AttributeReader implements Reader
 {
     /**
      * {@inheritDoc}

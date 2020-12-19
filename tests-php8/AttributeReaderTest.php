@@ -34,13 +34,13 @@ class AttributeReaderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->reader = new AttributesReader();
+        $this->reader = new AttributeReader();
     }
 
     public function testIsInstanceOfAttributes(): void
     {
         $actual = $this->reader;
-        $this->assertInstanceOf(AttributesReader::class, $actual);
+        $this->assertInstanceOf(AttributeReader::class, $actual);
     }
 
     public function testGetClassAnnotation(): void
