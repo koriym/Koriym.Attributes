@@ -39,7 +39,7 @@ class AttributeReaferTest extends TestCase
         $this->assertInstanceOf(AttributesReader::class, $actual);
     }
 
-    public function testGetClassAnnotationItem(): void
+    public function testGetClassAnnotation(): void
     {
         $class = new ReflectionClass(Fake::class);
         $annotationName = Cacheable::class;
@@ -48,7 +48,7 @@ class AttributeReaferTest extends TestCase
         $this->assertInstanceOf(Cacheable::class, $cacheable);
     }
 
-    public function testGetClassAnnotationList(): void
+    public function testGetClassAnnotations(): void
     {
         $class = new ReflectionClass(Fake::class);
         $attributes = $this->reader->getClassAnnotations($class);
@@ -65,7 +65,7 @@ class AttributeReaferTest extends TestCase
         $this->assertNull($this->reader->getClassAnnotation($class, NotExists::class));
     }
 
-    public function testGetMethodAnnotationItem(): void
+    public function testGetMethodAnnotation(): void
     {
         $method = new ReflectionMethod(Fake::class, 'subscribe');
         $annotationName = HttpCache::class;
@@ -74,7 +74,7 @@ class AttributeReaferTest extends TestCase
         $this->assertInstanceOf($annotationName, $cacheable);
     }
 
-    public function testGetMethodAnnotation(): void
+    public function testGetMethodAnnotations(): void
     {
         $method = new ReflectionMethod(Fake::class, 'subscribe');
         $attributes = $this->reader->getMethodAnnotations($method);
@@ -91,7 +91,7 @@ class AttributeReaferTest extends TestCase
         $this->assertNull($this->reader->getMethodAnnotation($method, NotExists::class));
     }
 
-    public function testGetPropertyAnnotationItem(): void
+    public function testGetPropertyAnnotation(): void
     {
         $prop = new ReflectionProperty(Fake::class, 'prop');
         $annotationName = Inject::class;
@@ -100,13 +100,7 @@ class AttributeReaferTest extends TestCase
         $this->assertInstanceOf($annotationName, $cacheable);
     }
 
-    public function testGetPropertyAnnotationNotFound(): void
-    {
-        $prop = new ReflectionProperty(Fake::class, 'prop');
-        $this->assertNull($this->reader->getPropertyAnnotation($prop, NotExists::class));
-    }
-
-    public function testGetPropertyAnnotationList(): void
+    public function testGetPropertyAnnotations(): void
     {
         $prop = new ReflectionProperty(Fake::class, 'prop');
         $attributes = $this->reader->getPropertyAnnotations($prop);
@@ -115,6 +109,12 @@ class AttributeReaferTest extends TestCase
         }, $attributes);
         $expected = [Inject::class, FooClass::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
+    }
+
+    public function testGetPropertyAnnotationNotFound(): void
+    {
+        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $this->assertNull($this->reader->getPropertyAnnotation($prop, NotExists::class));
     }
 
     public function testReadIneterfaceInClass(): void
