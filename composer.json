@@ -30,7 +30,8 @@
         "psr-4": {
             "Koriym\\Attributes\\": [
                 "tests/",
-                "tests/Fake"
+                "tests/Fake",
+                "tests-php8"
             ]
         }
     },
