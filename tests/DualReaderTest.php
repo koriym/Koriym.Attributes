@@ -11,7 +11,8 @@ use Doctrine\Common\Annotations\AnnotationReader;
  */
 class DualReaderTest extends AttributeReaderTest
 {
-    protected string $target = FakeDual::class;
+    /** @var class-string */
+    protected $target = FakeDual::class;
 
     protected function setUp(): void
     {

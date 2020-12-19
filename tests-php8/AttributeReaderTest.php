@@ -26,9 +26,11 @@ use function interface_exists;
 
 class AttributeReaderTest extends TestCase
 {
-    protected string $target = Fake::class;
+    /** @var class-string */
+    protected $target = Fake::class;
 
-    protected Reader $reader;
+    /** @var Reader */
+    protected $reader;
 
     protected function setUp(): void
     {
@@ -124,7 +126,6 @@ class AttributeReaderTest extends TestCase
 
     public function testReadIneterfaceInClass(): void
     {
-        $a = interface_exists(FooInterface::class);
         $class = new ReflectionClass(FakeInterfaceRead::class);
         $annotation = $this->reader->getClassAnnotation($class, FooInterface::class);
         $this->assertInstanceOf(FooClass::class, $annotation);

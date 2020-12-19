@@ -16,11 +16,13 @@ use Koriym\Attributes\Annotation\Transactional;
 #[Cacheable]
 /**
  * @Cacheable
+ * @FooClass
  */
 class FakeDual
 {
     /**
      * @Inject
+     * @FooClass
      */
     #[Inject]
     #[FooClass]
