@@ -15,35 +15,37 @@ use Koriym\Attributes\Annotation\Transactional;
 #[FooClass]
 #[Cacheable]
 /**
- * @PaidMemberOnly
  * @Cacheable
+ * @FooClass
  */
 class FakeDual
 {
+    /**
+     * @Inject
+     * @FooClass
+     *
+     * @var string
+     */
     #[Inject]
     #[FooClass]
-    /**
-     * @Inject
-     * @PaidMemberOnly
-     */
-    public string $prop;
+    public $prop;
 
-    #[Inject]
     /**
      * @Inject
      */
-    public function setKey(#[Named('auth_key')] string $authKey): void // named binding
+    #[Inject]
+    public function setKey(string $authKey): void // named binding
     {
     }
 
-    #[Transactional]
-    #[Loggable]
-    #[HttpCache(isPrivate: true, maxAge: 50)]
     /**
      * @Transactional
      * @Loggable
      * @HttpCache(isPrivate=true, maxAge=50)
      */
+    #[Transactional]
+    #[Loggable]
+    #[HttpCache(isPrivate: true, maxAge: 50)]
     public function subscribe(string $id): void  // intercepted
     {
     }

@@ -4,12 +4,18 @@ namespace Koriym\Attributes\Annotation;
 
 use Attribute;
 
+/**
+ * @Annotation
+ */
 #[Attribute]
 final class Named
 {
+    public string $name;
     public function __construct(
-        public string $name
+        array $values = [],
+        string $name = '',
     )
     {
+        $this->name = $values['name'] ?? $name;
     }
 }

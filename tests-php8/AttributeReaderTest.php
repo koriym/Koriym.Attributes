@@ -11,6 +11,7 @@ use Koriym\Attributes\Annotation\FooInterface;
 use Koriym\Attributes\Annotation\HttpCache;
 use Koriym\Attributes\Annotation\Inject;
 use Koriym\Attributes\Annotation\Loggable;
+use Koriym\Attributes\Annotation\NotExists;
 use Koriym\Attributes\Annotation\Transactional;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -23,9 +24,13 @@ use function class_exists;
 use function get_class;
 use function interface_exists;
 
-class AttributeReaferTest extends TestCase
+class AttributeReaderTest extends TestCase
 {
-    protected Reader $reader;
+    /** @var class-string */
+    protected $target = Fake::class;
+
+    /** @var Reader */
+    protected $reader;
 
     protected function setUp(): void
     {
@@ -38,18 +43,19 @@ class AttributeReaferTest extends TestCase
         $this->assertInstanceOf(AttributesReader::class, $actual);
     }
 
-    public function testGetClassAnnotationItem(): void
+    public function testGetClassAnnotation(): void
     {
-        $class = new ReflectionClass(Fake::class);
+        $class = new ReflectionClass($this->target);
         $annotationName = Cacheable::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getClassAnnotation($class, $annotationName);
         $this->assertInstanceOf(Cacheable::class, $cacheable);
+        $this->assertNull($this->reader->getClassAnnotation($class, FakeNotExists::class));
     }
 
-    public function testGetClassAnnotationList(): void
+    public function testGetClassAnnotations(): void
     {
-        $class = new ReflectionClass(Fake::class);
+        $class = new ReflectionClass($this->target);
         $attributes = $this->reader->getClassAnnotations($class);
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
@@ -58,18 +64,25 @@ class AttributeReaferTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
-    public function testGetMethodAnnotationItem(): void
+    public function testGetClassAnnotationNotFound(): void
     {
-        $method = new ReflectionMethod(Fake::class, 'subscribe');
-        $annotationName = HttpCache::class;
-        assert(class_exists($annotationName));
-        $cacheable = $this->reader->getMethodAnnotation($method, $annotationName);
-        $this->assertInstanceOf($annotationName, $cacheable);
+        $class = new ReflectionClass($this->target);
+        $this->assertNull($this->reader->getClassAnnotation($class, NotExists::class));
     }
 
     public function testGetMethodAnnotation(): void
     {
-        $method = new ReflectionMethod(Fake::class, 'subscribe');
+        $method = new ReflectionMethod($this->target, 'subscribe');
+        $annotationName = HttpCache::class;
+        assert(class_exists($annotationName));
+        $cacheable = $this->reader->getMethodAnnotation($method, $annotationName);
+        $this->assertInstanceOf($annotationName, $cacheable);
+        $this->assertNull($this->reader->getMethodAnnotation($method, FakeNotExists::class));
+    }
+
+    public function testGetMethodAnnotations(): void
+    {
+        $method = new ReflectionMethod($this->target, 'subscribe');
         $attributes = $this->reader->getMethodAnnotations($method);
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
@@ -78,18 +91,25 @@ class AttributeReaferTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
-    public function testGetPropertyAnnotationItem(): void
+    public function testGetMethodAnnotationNotFound(): void
     {
-        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $method = new ReflectionMethod($this->target, 'subscribe');
+        $this->assertNull($this->reader->getMethodAnnotation($method, NotExists::class));
+    }
+
+    public function testGetPropertyAnnotation(): void
+    {
+        $prop = new ReflectionProperty($this->target, 'prop');
         $annotationName = Inject::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getPropertyAnnotation($prop, $annotationName);
         $this->assertInstanceOf($annotationName, $cacheable);
+        $this->assertNull($this->reader->getPropertyAnnotation($prop, FakeNotExists::class));
     }
 
-    public function testGetPropertyAnnotationList(): void
+    public function testGetPropertyAnnotations(): void
     {
-        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $prop = new ReflectionProperty($this->target, 'prop');
         $attributes = $this->reader->getPropertyAnnotations($prop);
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
@@ -98,9 +118,14 @@ class AttributeReaferTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
+    public function testGetPropertyAnnotationNotFound(): void
+    {
+        $prop = new ReflectionProperty($this->target, 'prop');
+        $this->assertNull($this->reader->getPropertyAnnotation($prop, NotExists::class));
+    }
+
     public function testReadIneterfaceInClass(): void
     {
-        $a = interface_exists(FooInterface::class);
         $class = new ReflectionClass(FakeInterfaceRead::class);
         $annotation = $this->reader->getClassAnnotation($class, FooInterface::class);
         $this->assertInstanceOf(FooClass::class, $annotation);
@@ -111,6 +136,8 @@ class AttributeReaferTest extends TestCase
         $method = new ReflectionMethod(FakeInterfaceRead::class, 'subscribe');
         $annotation = $this->reader->getMethodAnnotation($method, FooInterface::class);
         $this->assertInstanceOf(FooClass::class, $annotation);
+        $noAttributeMethod = new ReflectionMethod(FakeInterfaceRead::class, 'noAttribute');
+        $this->assertNull($this->reader->getMethodAnnotation($noAttributeMethod, FooInterface::class));
     }
 
     public function testReadIneterfaceInProperty(): void

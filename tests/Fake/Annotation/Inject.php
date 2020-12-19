@@ -5,12 +5,18 @@ namespace Koriym\Attributes\Annotation;
 
 use Attribute;
 
+/**
+ * @Annotation
+ */
 #[Attribute]
 final class Inject
 {
+    public $optional;
     public function __construct(
-        public bool $optional = false
+        array $values = [],
+        bool $optional = false
     )
     {
+        $this->optional = $values['optional'] ?? $optional;
     }
 }
