@@ -11,6 +11,7 @@ use Koriym\Attributes\Annotation\FooInterface;
 use Koriym\Attributes\Annotation\HttpCache;
 use Koriym\Attributes\Annotation\Inject;
 use Koriym\Attributes\Annotation\Loggable;
+use Koriym\Attributes\Annotation\NotExists;
 use Koriym\Attributes\Annotation\Transactional;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -58,6 +59,12 @@ class AttributeReaferTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
+    public function testGetClassAnnotationNotFound(): void
+    {
+        $class = new ReflectionClass(Fake::class);
+        $this->assertNull($this->reader->getClassAnnotation($class, NotExists::class));
+    }
+
     public function testGetMethodAnnotationItem(): void
     {
         $method = new ReflectionMethod(Fake::class, 'subscribe');
@@ -78,6 +85,12 @@ class AttributeReaferTest extends TestCase
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
+    public function testGetMethodAnnotationNotFound(): void
+    {
+        $method = new ReflectionMethod(Fake::class, 'subscribe');
+        $this->assertNull($this->reader->getMethodAnnotation($method, NotExists::class));
+    }
+
     public function testGetPropertyAnnotationItem(): void
     {
         $prop = new ReflectionProperty(Fake::class, 'prop');
@@ -85,6 +98,12 @@ class AttributeReaferTest extends TestCase
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getPropertyAnnotation($prop, $annotationName);
         $this->assertInstanceOf($annotationName, $cacheable);
+    }
+
+    public function testGetPropertyAnnotationNotFound(): void
+    {
+        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $this->assertNull($this->reader->getPropertyAnnotation($prop, NotExists::class));
     }
 
     public function testGetPropertyAnnotationList(): void
