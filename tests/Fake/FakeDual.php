@@ -23,10 +23,12 @@ class FakeDual
     /**
      * @Inject
      * @FooClass
+     *
+     * @var string
      */
     #[Inject]
     #[FooClass]
-    public string $prop;
+    public $prop;
 
     /**
      * @Inject

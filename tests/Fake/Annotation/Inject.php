@@ -11,7 +11,7 @@ use Attribute;
 #[Attribute]
 final class Inject
 {
-    public bool $optional;
+    public $optional;
     public function __construct(
         array $values = [],
         bool $optional = false
