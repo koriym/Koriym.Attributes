@@ -35,6 +35,7 @@ Add `#[Attribute]` attribute.
 ```diff
 use Attribute;
 
+/** Annotation */
 +#[Attribute]
 final class Foo
 {
@@ -47,6 +48,7 @@ Following example works with both PHP8 attribute and `doctrine/annotations` in p
 ```diff
 use Attribute;
 
+/** Annotation */
 +#[Attribute]
 final class Foo
 {
