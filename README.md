@@ -17,14 +17,19 @@ However, This reader help you to code forward compatible that supports both PHP 
 Create the reader instance.
 
 ```php
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
+use Koriym\Attributes\DualReader;
+use Koriym\Attributes\AttributeReader;
+
 $reader = new DualReader(
     new AnnotationReader(),
-    new AttributesReader()
+    new AttributeReader()
 );
 assert($reader instanceof Reader);
 ```
 
-The reader can read boht annotations and attributes.
+The reader can read both annotations and attributes.
 
 ## Compatible Annotation
 
