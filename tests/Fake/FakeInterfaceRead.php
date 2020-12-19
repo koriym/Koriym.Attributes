@@ -15,4 +15,8 @@ class FakeInterfaceRead
     public function subscribe(): void
     {
     }
+
+    public function noAttribute(): void
+    {
+    }
 }
