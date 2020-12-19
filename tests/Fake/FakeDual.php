@@ -15,14 +15,12 @@ use Koriym\Attributes\Annotation\Transactional;
 #[FooClass]
 #[Cacheable]
 /**
- * @PaidMemberOnly
  * @Cacheable
  */
 class FakeDual
 {
     /**
      * @Inject
-     * @PaidMemberOnly
      */
     #[Inject]
     #[FooClass]
@@ -32,7 +30,7 @@ class FakeDual
      * @Inject
      */
     #[Inject]
-    public function setKey(#[Named('auth_key')] string $authKey): void // named binding
+    public function setKey(string $authKey): void // named binding
     {
     }
 

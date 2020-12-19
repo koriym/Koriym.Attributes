@@ -9,8 +9,10 @@ use Doctrine\Common\Annotations\AnnotationReader;
 /**
  * Inherit all test of AttributeReaferTest
  */
-class DualReaderTest extends AttributeReaferTest
+class DualReaderTest extends AttributeReaderTest
 {
+    protected string $target = FakeDual::class;
+
     protected function setUp(): void
     {
         $this->reader = new DualReader(

@@ -24,8 +24,10 @@ use function class_exists;
 use function get_class;
 use function interface_exists;
 
-class AttributeReaferTest extends TestCase
+class AttributeReaderTest extends TestCase
 {
+    protected string $target = Fake::class;
+
     protected Reader $reader;
 
     protected function setUp(): void
@@ -41,7 +43,7 @@ class AttributeReaferTest extends TestCase
 
     public function testGetClassAnnotation(): void
     {
-        $class = new ReflectionClass(Fake::class);
+        $class = new ReflectionClass($this->target);
         $annotationName = Cacheable::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getClassAnnotation($class, $annotationName);
@@ -51,7 +53,7 @@ class AttributeReaferTest extends TestCase
 
     public function testGetClassAnnotations(): void
     {
-        $class = new ReflectionClass(Fake::class);
+        $class = new ReflectionClass($this->target);
         $attributes = $this->reader->getClassAnnotations($class);
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
@@ -62,13 +64,13 @@ class AttributeReaferTest extends TestCase
 
     public function testGetClassAnnotationNotFound(): void
     {
-        $class = new ReflectionClass(Fake::class);
+        $class = new ReflectionClass($this->target);
         $this->assertNull($this->reader->getClassAnnotation($class, NotExists::class));
     }
 
     public function testGetMethodAnnotation(): void
     {
-        $method = new ReflectionMethod(Fake::class, 'subscribe');
+        $method = new ReflectionMethod($this->target, 'subscribe');
         $annotationName = HttpCache::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getMethodAnnotation($method, $annotationName);
@@ -78,7 +80,7 @@ class AttributeReaferTest extends TestCase
 
     public function testGetMethodAnnotations(): void
     {
-        $method = new ReflectionMethod(Fake::class, 'subscribe');
+        $method = new ReflectionMethod($this->target, 'subscribe');
         $attributes = $this->reader->getMethodAnnotations($method);
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
@@ -89,13 +91,13 @@ class AttributeReaferTest extends TestCase
 
     public function testGetMethodAnnotationNotFound(): void
     {
-        $method = new ReflectionMethod(Fake::class, 'subscribe');
+        $method = new ReflectionMethod($this->target, 'subscribe');
         $this->assertNull($this->reader->getMethodAnnotation($method, NotExists::class));
     }
 
     public function testGetPropertyAnnotation(): void
     {
-        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $prop = new ReflectionProperty($this->target, 'prop');
         $annotationName = Inject::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getPropertyAnnotation($prop, $annotationName);
@@ -105,7 +107,7 @@ class AttributeReaferTest extends TestCase
 
     public function testGetPropertyAnnotations(): void
     {
-        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $prop = new ReflectionProperty($this->target, 'prop');
         $attributes = $this->reader->getPropertyAnnotations($prop);
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
@@ -116,7 +118,7 @@ class AttributeReaferTest extends TestCase
 
     public function testGetPropertyAnnotationNotFound(): void
     {
-        $prop = new ReflectionProperty(Fake::class, 'prop');
+        $prop = new ReflectionProperty($this->target, 'prop');
         $this->assertNull($this->reader->getPropertyAnnotation($prop, NotExists::class));
     }
 
