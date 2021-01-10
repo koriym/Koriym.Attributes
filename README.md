@@ -59,10 +59,11 @@ final class Foo
 {
     public string $bar;
     public int $baz;
-+    public function __construct(array $value = [], string $bar = '', int $baz = 0)
++    /** @param array{bar?: string, baz?: int} $values 
++    public function __construct(array $values = [], string $bar = '', int $baz = 0)
 +    {
-+        $this->bar = $value['bar'] ?? $bar;
-+        $this->baz = $value['baz'] ?? $baz;
++        $this->bar = $values['bar'] ?? $bar;
++        $this->baz = $values['baz'] ?? $baz;
 +    }
 }
 ```
