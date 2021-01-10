@@ -13,16 +13,19 @@ use const PHP_VERSION_ID;
 
 final class DualReader implements Reader
 {
-    /** @var bool */ private $php8;
+    /** @var bool */
+    private $php8;
 
-    /** @var Reader */ private $annotationReaedr;
+    /** @var Reader */
+    private $annotationReader;
 
-    /** @var Reader */ private $attributeReader;
+    /** @var Reader */
+    private $attributeReader;
 
-    public function __construct(Reader $annotationReaedr, Reader $attributeReader)
+    public function __construct(Reader $annotationReader, Reader $attributeReader)
     {
         $this->php8 = PHP_VERSION_ID >= 80000;
-        $this->annotationReaedr = $annotationReaedr;
+        $this->annotationReader = $annotationReader;
         $this->attributeReader = $attributeReader;
     }
 
@@ -38,7 +41,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReaedr->getMethodAnnotations($method);
+        return $this->annotationReader->getMethodAnnotations($method);
     }
 
     /**
@@ -58,7 +61,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReaedr->getClassAnnotations($class);
+        return $this->annotationReader->getClassAnnotations($class);
     }
 
     /**
@@ -85,7 +88,7 @@ final class DualReader implements Reader
 
         doctrine_annotation:
 
-        return $this->annotationReaedr->getClassAnnotation($class, $annotationName);
+        return $this->annotationReader->getClassAnnotation($class, $annotationName);
     }
 
     /**
@@ -100,7 +103,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReaedr->getMethodAnnotation($method, $annotationName);
+        return $this->annotationReader->getMethodAnnotation($method, $annotationName);
     }
 
     /**
@@ -115,7 +118,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReaedr->getPropertyAnnotations($property);
+        return $this->annotationReader->getPropertyAnnotations($property);
     }
 
     /**
@@ -130,6 +133,6 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReaedr->getPropertyAnnotation($property, $annotationName);
+        return $this->annotationReader->getPropertyAnnotation($property, $annotationName);
     }
 }
