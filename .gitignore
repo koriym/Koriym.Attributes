@@ -3,4 +3,6 @@
 /composer.lock
 /phpunit.xml
 /.phpunit.result.cache
-coverage.xml
+/coverage.xml
+/vendor-bin/**/vendor
+/.phpcs-cache
