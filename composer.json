@@ -16,12 +16,7 @@
     "require-dev": {
         "ext-pdo": "*",
         "phpunit/phpunit": "^9.2",
-        "squizlabs/php_codesniffer": "^3.5",
-        "phpmd/phpmd": "^2.9",
-        "phpstan/phpstan": "^0.12",
-        "vimeo/psalm": "^4.1",
-        "phpmetrics/phpmetrics": "^2.7",
-        "doctrine/coding-standard": "^8.1",
+        "bamarni/composer-bin-plugin": "^1.4"
     },
     "autoload": {
         "psr-4": {
@@ -38,6 +33,8 @@
         }
     },
     "scripts": {
+        "post-install-cmd": ["@composer bin all install --ansi"],
+        "post-update-cmd": ["@composer bin all update --ansi"],
         "test": "./vendor/bin/phpunit",
         "tests": ["@cs", "@test", "@sa"],
         "coverage": ["php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"],
