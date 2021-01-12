@@ -17,7 +17,7 @@ final class DualReader implements Reader
     private $php8;
 
     /** @var Reader */
-    private $annotationReader;
+    private $delegate;
 
     /** @var Reader */
     private $attributeReader;
@@ -25,7 +25,7 @@ final class DualReader implements Reader
     public function __construct(Reader $annotationReader, Reader $attributeReader)
     {
         $this->php8 = PHP_VERSION_ID >= 80000;
-        $this->annotationReader = $annotationReader;
+        $this->delegate = $annotationReader;
         $this->attributeReader = $attributeReader;
     }
 
@@ -41,7 +41,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReader->getMethodAnnotations($method);
+        return $this->delegate->getMethodAnnotations($method);
     }
 
     /**
@@ -61,7 +61,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReader->getClassAnnotations($class);
+        return $this->delegate->getClassAnnotations($class);
     }
 
     /**
@@ -84,7 +84,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReaedr->getClassAnnotation($class, $annotationName);
+        return $this->delegate->getClassAnnotation($class, $annotationName);
     }
 
     /**
@@ -99,7 +99,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReader->getMethodAnnotation($method, $annotationName);
+        return $this->delegate->getMethodAnnotation($method, $annotationName);
     }
 
     /**
@@ -114,7 +114,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReader->getPropertyAnnotations($property);
+        return $this->delegate->getPropertyAnnotations($property);
     }
 
     /**
@@ -129,6 +129,6 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->annotationReader->getPropertyAnnotation($property, $annotationName);
+        return $this->delegate->getPropertyAnnotation($property, $annotationName);
     }
 }
