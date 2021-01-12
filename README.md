@@ -1,5 +1,9 @@
 # Koriym.Attributes
 
+![Continuous Integration](https://github.com/koriym/Koriym.Attributes/workflows/Continuous%20Integration/badge.svg)
+![Static Analysis](https://github.com/koriym/Koriym.Attributes/workflows/Static%20Analysis/badge.svg)
+![Coding Standards](https://github.com/koriym/Koriym.Attributes/workflows/Coding%20Standards/badge.svg)
+
 A `koriym/attributes` dual reader implements doctrine/annotation [Reader](https://github.com/doctrine/annotations/blob/master/lib/Doctrine/Common/Annotations/Reader.php) interface
 in order to read both doctrine/annotation and PHP 8 attributes.
 
@@ -17,14 +21,19 @@ However, This reader help you to code forward compatible that supports both PHP 
 Create the reader instance.
 
 ```php
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\Reader;
+use Koriym\Attributes\DualReader;
+use Koriym\Attributes\AttributeReader;
+
 $reader = new DualReader(
     new AnnotationReader(),
-    new AttributesReader()
+    new AttributeReader()
 );
 assert($reader instanceof Reader);
 ```
 
-The reader can read boht annotations and attributes.
+The reader can read both annotations and attributes.
 
 ## Compatible Annotation
 
@@ -54,10 +63,11 @@ final class Foo
 {
     public string $bar;
     public int $baz;
-+    public function __construct(array $value = [], string $bar = '', int $baz = 0)
++    /** @param array{bar?: string, baz?: int} $values 
++    public function __construct(array $values = [], string $bar = '', int $baz = 0)
 +    {
-+        $this->bar = $value['bar'] ?? $bar;
-+        $this->baz = $value['baz'] ?? $baz;
++        $this->bar = $values['bar'] ?? $bar;
++        $this->baz = $values['baz'] ?? $baz;
 +    }
 }
 ```

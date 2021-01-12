@@ -15,7 +15,6 @@ jobs:
       matrix:
         operating-system:
           - ubuntu-latest
-          - windows-latest
         php-version:
           - '7.3'
           - '7.4'
