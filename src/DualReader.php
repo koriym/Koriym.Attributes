@@ -74,16 +74,12 @@ final class DualReader implements Reader
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
-        if (! $this->php8) {
-            goto doctrine_annotation;
+        if ($this->php8) {
+            $annotation = $this->attributeReader->getClassAnnotation($class, $annotationName);
+            if ($annotation) {
+                return $annotation;
+            }
         }
-
-        $annotation = $this->attributeReader->getClassAnnotation($class, $annotationName);
-        if ($annotation) {
-            return $annotation;
-        }
-
-        doctrine_annotation:
 
         return $this->annotationReaedr->getClassAnnotation($class, $annotationName);
     }
