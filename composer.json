@@ -1,6 +1,7 @@
 {
     "name": "koriym/attributes",
-    "description": "",
+    "keywords": ["annotation", "attribute"],
+    "description": "An annotation/attribute reader",
     "license": "MIT",
     "authors": [
         {
@@ -13,13 +14,9 @@
         "doctrine/annotations": "^1.11"
     },
     "require-dev": {
+        "ext-pdo": "*",
         "phpunit/phpunit": "^9.2",
-        "squizlabs/php_codesniffer": "^3.5",
-        "phpmd/phpmd": "^2.9",
-        "phpstan/phpstan": "^0.12",
-        "vimeo/psalm": "^4.1",
-        "phpmetrics/phpmetrics": "^2.7",
-        "doctrine/coding-standard": "^8.1", "ext-pdo": "*"
+        "bamarni/composer-bin-plugin": "^1.4"
     },
     "autoload": {
         "psr-4": {
@@ -36,39 +33,18 @@
         }
     },
     "scripts": {
-        "test": [
-            "vendor/bin/phpunit"
-        ],
-        "tests": [
-            "@cs",
-            "@sa",
-            "@test"
-        ],
-        "coverage": [
-            "XDEBUG_MODE=coverage php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"
-        ],
-        "pcov": [
-            "php -dextension=pcov.so -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage  --coverage-clover=coverage.xml"
-        ],
-        "cs": [
-            "./vendor/bin/phpcs --standard=phpcs.xml src tests"
-        ],
-        "cs-fix": [
-            "./vendor/bin/phpcbf src tests"
-        ],
-        "sa": [
-            "phpstan analyse -c phpstan.neon",
-            "psalm --show-info=true"
-        ],
-        "metrics": [
-            "phpmetrics --report-html=build/metrics --excluded-dirs=src/Exception src"
-        ],
-        "build": [
-            "@cs",
-            "@sa",
-            "@pcov",
-            "@metrics"
-        ]
+        "post-install-cmd": ["@composer bin all install --ansi"],
+        "post-update-cmd": ["@composer bin all update --ansi"],
+        "test": "./vendor/bin/phpunit",
+        "tests": ["@cs", "@test", "@sa"],
+        "coverage": ["php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"],
+        "pcov": ["php -dextension=pcov.so -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage  --coverage-clover=coverage.xml"],
+        "cs": ["phpcs --standard=./phpcs.xml src tests"],
+        "cs-fix": ["./vendor/bin/phpcbf src tests"],
+        "sa": ["./vendor/bin/phpstan analyse -c phpstan.neon", "psalm --show-info=true"],
+        "clean": ["./vendor/bin/phpstan clear-result-cache", "./vendor/bin/psalm --clear-cache"],
+        "metrics": ["./vendor/bin/phpmetrics --report-html=build/metrics --exclude=Exception --log-junit=build/junit.xml --junit=build/junit.xml src"],
+        "build": ["@cs", "@sa", "@pcov", "@metrics"]
     },
     "scripts-descriptions": {
         "test": "Run unit tests",
@@ -78,6 +54,7 @@
         "cs": "Check the coding style",
         "cs-fix": "Fix the coding style",
         "sa": "Run static analysis",
+        "clean": "Clear cache",
         "metrics": "Build metrics report",
         "build": "Build project"
     }
