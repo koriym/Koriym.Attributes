@@ -44,9 +44,9 @@ Existing doctrine annotations can be changed into annotations that work for both
 Add `#[Attribute]` attribute.
 
 ```diff
-use Attribute;
+use @Attribute;
 
-/** Annotation */
+/** @Annotation */
 +#[Attribute]
 final class Foo
 {
@@ -58,18 +58,22 @@ Following example works with both PHP8 attribute and `doctrine/annotations` in p
 
 ```diff
 use Attribute;
++use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 
-/** Annotation */
-+#[Attribute]
-final class Foo
+/**
+ * @Annotation 
+ * @Target("METHOD")
+ */
++#[Attribute(Attribute::TARGET_METHOD)]
+-final class Foo
++final class Foo implements NamedArgumentConstructorAnnotation 
 {
     public string $bar;
     public int $baz;
-+    /** @param array{bar?: string, baz?: int} $values 
-+    public function __construct(array $values = [], string $bar = '', int $baz = 0)
++    public function __construct(string $bar = '', int $baz = 0)
 +    {
-+        $this->bar = $values['bar'] ?? $bar;
-+        $this->baz = $values['baz'] ?? $baz;
++        $this->bar = $bar;
++        $this->baz = $baz;
 +    }
 }
 ```
