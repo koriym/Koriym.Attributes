@@ -44,7 +44,7 @@ Existing doctrine annotations can be changed into annotations that work for both
 Add `#[Attribute]` attribute.
 
 ```diff
-use @Attribute;
+use Attribute;
 
 /** @Annotation */
 +#[Attribute]
