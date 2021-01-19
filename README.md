@@ -54,7 +54,7 @@ final class Foo
 ```
 
 Then add constructor when annotation has properties.
-Following example works with both PHP8 attribute and `doctrine/annotations` in php7+.
+Following example works with both PHP8 attribute and `doctrine/annotations`.
 
 ```diff
 use Attribute;
@@ -78,6 +78,4 @@ use Attribute;
 }
 ```
 
-First argument `$value` is used only by `doctrine/annotations`.
-The rest of arguments(`$bar`, `$baz`) are for PHP8 attribute.
-Those arguments need default value for the case in `doctrine/annotations`.
+See more about annotation compatible attribute at [Constructors with Named Parameters](https://github.com/doctrine/annotations/blob/1.11.x/docs/en/custom.rst#optional-constructors-with-named-parameters)
