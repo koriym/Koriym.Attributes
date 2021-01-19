@@ -76,13 +76,13 @@ class AttributeReaderTest extends TestCase
     {
         $class = new ReflectionClass($this->target);
         $classAnnotation = $this->reader->getClassAnnotation($class, AbstractFoo::class);
-        $this->assertInstanceOf( AbstractFoo::class, $classAnnotation);
+        $this->assertInstanceOf(AbstractFoo::class, $classAnnotation);
         $method = new ReflectionMethod($this->target, 'setKey');
         $methodAnnotation = $this->reader->getMethodAnnotation($method, AbstractFoo::class);
-        $this->assertInstanceOf( AbstractFoo::class, $methodAnnotation);
+        $this->assertInstanceOf(AbstractFoo::class, $methodAnnotation);
         $prop = new ReflectionProperty($this->target, 'prop');
         $propAnnotation = $this->reader->getPropertyAnnotation($prop, AbstractFoo::class);
-        $this->assertInstanceOf( AbstractFoo::class, $propAnnotation);
+        $this->assertInstanceOf(AbstractFoo::class, $propAnnotation);
     }
 
     public function testGetMethodAnnotation(): void
