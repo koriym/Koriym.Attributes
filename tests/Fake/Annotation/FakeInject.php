@@ -4,19 +4,17 @@
 namespace Koriym\Attributes\Annotation;
 
 use Attribute;
+use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 
 /**
  * @Annotation
  */
 #[Attribute]
-final class FakeInject
+final class FakeInject implements NamedArgumentConstructorAnnotation
 {
     public $optional;
-    public function __construct(
-        array $values = [],
-        bool $optional = false
-    )
+    public function __construct(bool $optional = false)
     {
-        $this->optional = $values['optional'] ?? $optional;
+        $this->optional = $optional;
     }
 }

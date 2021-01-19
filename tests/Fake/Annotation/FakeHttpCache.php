@@ -3,22 +3,20 @@
 namespace Koriym\Attributes\Annotation;
 
 use Attribute;
+use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 
 /**
  * @Annotation
  */
 #[Attribute]
-final class FakeHttpCache
+final class FakeHttpCache implements NamedArgumentConstructorAnnotation
 {
     public $isPrivate;
     public $maxAg;
-    public function __construct(
-        $values = [],
-        $isPrivate = false,
-        $maxAge = 0)
+    public function __construct($isPrivate = false, $maxAge = 0)
     {
-        $this->isPrivate = $values['isPrivate'] ?? $isPrivate;
-        $this->maxAge = $values['maxAge'] ?? $maxAge;
+        $this->isPrivate = $isPrivate;
+        $this->maxAge = $maxAge;
     }
 }
 

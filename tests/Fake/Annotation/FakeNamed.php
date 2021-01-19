@@ -3,19 +3,17 @@
 namespace Koriym\Attributes\Annotation;
 
 use Attribute;
+use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 
 /**
  * @Annotation
  */
 #[Attribute]
-final class FakeNamed
+final class FakeNamed implements NamedArgumentConstructorAnnotation
 {
     public string $name;
-    public function __construct(
-        array $values = [],
-        string $name = '',
-    )
+    public function __construct(string $name = '',)
     {
-        $this->name = $values['name'] ?? $name;
+        $this->name = $name;
     }
 }
