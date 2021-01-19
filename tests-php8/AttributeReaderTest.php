@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
+use Koriym\Attributes\Annotation\AbstractFoo;
 use Koriym\Attributes\Annotation\Cacheable;
+use Koriym\Attributes\Annotation\FakeNotExists;
 use Koriym\Attributes\Annotation\FooClass;
 use Koriym\Attributes\Annotation\FooInterface;
 use Koriym\Attributes\Annotation\HttpCache;
@@ -68,6 +70,19 @@ class AttributeReaderTest extends TestCase
     {
         $class = new ReflectionClass($this->target);
         $this->assertNull($this->reader->getClassAnnotation($class, NotExists::class));
+    }
+
+    public function testGetAbstractAnnotation(): void
+    {
+        $class = new ReflectionClass($this->target);
+        $classAnnotation = $this->reader->getClassAnnotation($class, AbstractFoo::class);
+        $this->assertInstanceOf( AbstractFoo::class, $classAnnotation);
+        $method = new ReflectionMethod($this->target, 'setKey');
+        $methodAnnotation = $this->reader->getMethodAnnotation($method, AbstractFoo::class);
+        $this->assertInstanceOf( AbstractFoo::class, $methodAnnotation);
+        $prop = new ReflectionProperty($this->target, 'prop');
+        $propAnnotation = $this->reader->getPropertyAnnotation($prop, AbstractFoo::class);
+        $this->assertInstanceOf( AbstractFoo::class, $propAnnotation);
     }
 
     public function testGetMethodAnnotation(): void
