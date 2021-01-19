@@ -9,7 +9,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 /**
  * Inherit all test of AttributeReaferTest
  */
-class DualReaderTest extends AttributeReaderTest
+class DualReaderTest extends CompatibilityTest
 {
     /** @var class-string */
     protected $target = FakeDual::class;
