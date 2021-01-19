@@ -10,9 +10,6 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-use function interface_exists;
-use function is_subclass_of;
-
 final class AttributeReader implements Reader
 {
     /**
