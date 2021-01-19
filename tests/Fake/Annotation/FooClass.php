@@ -9,6 +9,6 @@ use Attribute;
  * @Annotation
  */
 #[Attribute]
-final class FooClass implements FooInterface
+final class FooClass extends AbstractFoo implements FooInterface
 {
 }

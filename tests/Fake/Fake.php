@@ -23,6 +23,7 @@ class Fake
     public string $prop;
 
     #[Inject]
+    #[FooClass]
     public function setKey(#[Named('auth_key')] string $authKey): void // named binding
     {
     }
