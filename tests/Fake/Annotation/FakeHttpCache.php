@@ -8,7 +8,7 @@ use Attribute;
  * @Annotation
  */
 #[Attribute]
-final class HttpCache
+final class FakeHttpCache
 {
     public $isPrivate;
     public $maxAg;

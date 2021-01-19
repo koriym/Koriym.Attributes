@@ -10,6 +10,6 @@ use Attribute;
  * @Annotation
  */
 #[Attribute]
-class FakeNotExists
+final class FakeNotExists
 {
 }

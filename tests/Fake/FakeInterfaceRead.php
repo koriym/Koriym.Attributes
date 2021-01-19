@@ -2,26 +2,27 @@
 
 namespace Koriym\Attributes;
 
-use Koriym\Attributes\Annotation\FooClass;
+use Koriym\Attributes\Annotation\FakeFooClass;
+use Koriym\Attributes\Annotation\FooClassFake;
 
 /**
- * @FooClass
+ * @FakeFooClass
  */
-#[FooClass]
+#[FakeFooClass]
 class FakeInterfaceRead
 {
     /**
-     * @FooClass
+     * @FakeFooClass
      *
      * @var string
      */
-    #[FooClass]
+    #[FakeFooClass]
     public $prop;
 
     /**
-     * @FooClass
+     * @FakeFooClass
      */
-    #[FooClass]
+    #[FakeFooClass]
     public function subscribe(): void
     {
     }

@@ -2,6 +2,6 @@
 
 namespace Koriym\Attributes\Annotation;
 
-abstract class AbstractFoo
+interface FakeFooInterface
 {
 }

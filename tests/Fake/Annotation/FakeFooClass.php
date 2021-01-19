@@ -1,6 +1,5 @@
 <?php
 
-declare(strict_types=1);
 
 namespace Koriym\Attributes\Annotation;
 
@@ -10,6 +9,6 @@ use Attribute;
  * @Annotation
  */
 #[Attribute]
-final class Cacheable
+final class FakeFooClass extends FakeAbstractFoo implements FakeFooInterface
 {
 }

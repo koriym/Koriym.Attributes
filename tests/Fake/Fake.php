@@ -4,38 +4,39 @@ declare(strict_types=1);
 
 namespace Koriym\Attributes;
 
-use Koriym\Attributes\Annotation\Assisted;
-use Koriym\Attributes\Annotation\Cacheable;
+use Koriym\Attributes\Annotation\FakeAssisted;
+use Koriym\Attributes\Annotation\FakeCacheable;
+use Koriym\Attributes\Annotation\FakeFooClass;
 use Koriym\Attributes\Annotation\FooClass;
-use Koriym\Attributes\Annotation\HttpCache;
-use Koriym\Attributes\Annotation\Inject;
-use Koriym\Attributes\Annotation\Loggable;
-use Koriym\Attributes\Annotation\Named;
-use Koriym\Attributes\Annotation\Transactional;
+use Koriym\Attributes\Annotation\FakeHttpCache;
+use Koriym\Attributes\Annotation\FakeInject;
+use Koriym\Attributes\Annotation\FakeLoggable;
+use Koriym\Attributes\Annotation\FakeNamed;
+use Koriym\Attributes\Annotation\FakeTransactional;
 use PDO;
 
-#[FooClass]
-#[Cacheable]
+#[FakeFooClass]
+#[FakeCacheable]
 class Fake
 {
-    #[Inject]
-    #[FooClass]
+    #[FakeInject]
+    #[FakeFooClass]
     public string $prop;
 
-    #[Inject]
-    #[FooClass]
-    public function setKey(#[Named('auth_key')] string $authKey): void // named binding
+    #[FakeInject]
+    #[FakeFooClass]
+    public function setKey(#[FakeNamed('auth_key')] string $authKey): void // named binding
     {
     }
 
-    #[Transactional]
-    #[Loggable]
-    #[HttpCache(isPrivate: true, maxAge: 50)]
+    #[FakeTransactional]
+    #[FakeLoggable]
+    #[FakeHttpCache(isPrivate: true, maxAge: 50)]
     public function subscribe(string $id): void  // intercepted
     {
     }
 
-    public function getPdo(string $id, #[Assisted ] PDO $pdo): void // runtime injection
+    public function getPdo(string $id, #[FakeAssisted ] PDO $pdo): void // runtime injection
     {
     }
 }

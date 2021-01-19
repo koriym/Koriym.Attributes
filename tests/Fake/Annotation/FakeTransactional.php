@@ -10,6 +10,6 @@ use Attribute;
  * @Annotation
  */
 #[Attribute]
-final class Transactional
+final class FakeTransactional
 {
 }

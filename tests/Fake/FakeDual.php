@@ -4,48 +4,47 @@ declare(strict_types=1);
 
 namespace Koriym\Attributes;
 
-use Koriym\Attributes\Annotation\Cacheable;
-use Koriym\Attributes\Annotation\FooClass;
-use Koriym\Attributes\Annotation\HttpCache;
-use Koriym\Attributes\Annotation\Inject;
-use Koriym\Attributes\Annotation\Loggable;
-use Koriym\Attributes\Annotation\Named;
-use Koriym\Attributes\Annotation\Transactional;
+use Koriym\Attributes\Annotation\FakeCacheable;
+use Koriym\Attributes\Annotation\FakeFooClass;
+use Koriym\Attributes\Annotation\FakeHttpCache;
+use Koriym\Attributes\Annotation\FakeInject;
+use Koriym\Attributes\Annotation\FakeLoggable;
+use Koriym\Attributes\Annotation\FakeTransactional;
 
-#[FooClass]
-#[Cacheable]
+#[FakeFooClass]
+#[FakeCacheable]
 /**
- * @Cacheable
- * @FooClass
+ * @FakeCacheable
+ * @FakeFooClass
  */
 class FakeDual
 {
     /**
-     * @Inject
-     * @FooClass
+     * @FakeInject
+     * @FakeFooClass
      *
      * @var string
      */
-    #[Inject]
-    #[FooClass]
+    #[FakeInject]
+    #[FakeFooClass]
     public $prop;
 
     /**
-     * @Inject
+     * @FakeInject
      */
-    #[Inject]
+    #[FakeInject]
     public function setKey(string $authKey): void // named binding
     {
     }
 
     /**
-     * @Transactional
-     * @Loggable
-     * @HttpCache(isPrivate=true, maxAge=50)
+     * @FakeTransactional
+     * @FakeLoggable
+     * @FakeHttpCache(isPrivate=true, maxAge=50)
      */
-    #[Transactional]
-    #[Loggable]
-    #[HttpCache(isPrivate: true, maxAge: 50)]
+    #[FakeTransactional]
+    #[FakeLoggable]
+    #[FakeHttpCache(isPrivate: true, maxAge: 50)]
     public function subscribe(string $id): void  // intercepted
     {
     }

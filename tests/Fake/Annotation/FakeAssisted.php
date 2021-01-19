@@ -6,10 +6,7 @@ namespace Koriym\Attributes\Annotation;
 
 use Attribute;
 
-/**
- * @Annotation
- */
 #[Attribute]
-final class NotExists
+final class FakeAssisted
 {
 }

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Koriym\Attributes\Annotation;
 
 use Attribute;
@@ -8,14 +9,14 @@ use Attribute;
  * @Annotation
  */
 #[Attribute]
-final class Named
+final class FakeInject
 {
-    public string $name;
+    public $optional;
     public function __construct(
         array $values = [],
-        string $name = '',
+        bool $optional = false
     )
     {
-        $this->name = $values['name'] ?? $name;
+        $this->optional = $values['optional'] ?? $optional;
     }
 }

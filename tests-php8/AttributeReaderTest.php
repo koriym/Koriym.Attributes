@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
-use Koriym\Attributes\Annotation\AbstractFoo;
+use Koriym\Attributes\Annotation\FakeAbstractFoo;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -24,13 +24,13 @@ class AttributeReaderTest extends TestCase
     public function testGetAbstractAnnotation(): void
     {
         $class = new ReflectionClass(Fake::class);
-        $classAnnotation = $this->reader->getClassAnnotation($class, AbstractFoo::class);
-        $this->assertInstanceOf(AbstractFoo::class, $classAnnotation);
+        $classAnnotation = $this->reader->getClassAnnotation($class, FakeAbstractFoo::class);
+        $this->assertInstanceOf(FakeAbstractFoo::class, $classAnnotation);
         $method = new ReflectionMethod(Fake::class, 'setKey');
-        $methodAnnotation = $this->reader->getMethodAnnotation($method, AbstractFoo::class);
-        $this->assertInstanceOf(AbstractFoo::class, $methodAnnotation);
+        $methodAnnotation = $this->reader->getMethodAnnotation($method, FakeAbstractFoo::class);
+        $this->assertInstanceOf(FakeAbstractFoo::class, $methodAnnotation);
         $prop = new ReflectionProperty(Fake::class, 'prop');
-        $propAnnotation = $this->reader->getPropertyAnnotation($prop, AbstractFoo::class);
-        $this->assertInstanceOf(AbstractFoo::class, $propAnnotation);
+        $propAnnotation = $this->reader->getPropertyAnnotation($prop, FakeAbstractFoo::class);
+        $this->assertInstanceOf(FakeAbstractFoo::class, $propAnnotation);
     }
 }

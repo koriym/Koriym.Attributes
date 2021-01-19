@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\Reader;
-use Koriym\Attributes\Annotation\Cacheable;
+use Koriym\Attributes\Annotation\FakeCacheable;
+use Koriym\Attributes\Annotation\FakeFooClass;
 use Koriym\Attributes\Annotation\FakeNotExists;
-use Koriym\Attributes\Annotation\FooClass;
-use Koriym\Attributes\Annotation\FooInterface;
-use Koriym\Attributes\Annotation\HttpCache;
-use Koriym\Attributes\Annotation\Inject;
-use Koriym\Attributes\Annotation\Loggable;
-use Koriym\Attributes\Annotation\NotExists;
-use Koriym\Attributes\Annotation\Transactional;
+use Koriym\Attributes\Annotation\FakeFooInterface;
+use Koriym\Attributes\Annotation\FakeHttpCache;
+use Koriym\Attributes\Annotation\FakeInject;
+use Koriym\Attributes\Annotation\FakeLoggable;
+use Koriym\Attributes\Annotation\FakeTransactional;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
@@ -46,10 +45,10 @@ class CompatibilityTest extends TestCase
     public function testGetClassAnnotation(): void
     {
         $class = new ReflectionClass($this->target);
-        $annotationName = Cacheable::class;
+        $annotationName = FakeCacheable::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getClassAnnotation($class, $annotationName);
-        $this->assertInstanceOf(Cacheable::class, $cacheable);
+        $this->assertInstanceOf(FakeCacheable::class, $cacheable);
         $this->assertNull($this->reader->getClassAnnotation($class, FakeNotExists::class));
     }
 
@@ -60,20 +59,20 @@ class CompatibilityTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [FooClass::class, Cacheable::class];
+        $expected = [FakeFooClass::class, FakeCacheable::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
     public function testGetClassAnnotationNotFound(): void
     {
         $class = new ReflectionClass($this->target);
-        $this->assertNull($this->reader->getClassAnnotation($class, NotExists::class));
+        $this->assertNull($this->reader->getClassAnnotation($class, FakeNotExists::class));
     }
 
     public function testGetMethodAnnotation(): void
     {
         $method = new ReflectionMethod($this->target, 'subscribe');
-        $annotationName = HttpCache::class;
+        $annotationName = FakeHttpCache::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getMethodAnnotation($method, $annotationName);
         $this->assertInstanceOf($annotationName, $cacheable);
@@ -87,20 +86,20 @@ class CompatibilityTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [Loggable::class, HttpCache::class, Transactional::class];
+        $expected = [FakeLoggable::class, FakeHttpCache::class, FakeTransactional::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
     public function testGetMethodAnnotationNotFound(): void
     {
         $method = new ReflectionMethod($this->target, 'subscribe');
-        $this->assertNull($this->reader->getMethodAnnotation($method, NotExists::class));
+        $this->assertNull($this->reader->getMethodAnnotation($method, FakeNotExists::class));
     }
 
     public function testGetPropertyAnnotation(): void
     {
         $prop = new ReflectionProperty($this->target, 'prop');
-        $annotationName = Inject::class;
+        $annotationName = FakeInject::class;
         assert(class_exists($annotationName));
         $cacheable = $this->reader->getPropertyAnnotation($prop, $annotationName);
         $this->assertInstanceOf($annotationName, $cacheable);
@@ -114,36 +113,36 @@ class CompatibilityTest extends TestCase
         $actural = array_map(static function (object $attribute): string {
             return get_class($attribute);
         }, $attributes);
-        $expected = [Inject::class, FooClass::class];
+        $expected = [FakeInject::class, FakeFooClass::class];
         $this->assertEqualsCanonicalizing($expected, $actural);
     }
 
     public function testGetPropertyAnnotationNotFound(): void
     {
         $prop = new ReflectionProperty($this->target, 'prop');
-        $this->assertNull($this->reader->getPropertyAnnotation($prop, NotExists::class));
+        $this->assertNull($this->reader->getPropertyAnnotation($prop, FakeNotExists::class));
     }
 
     public function testReadIneterfaceInClass(): void
     {
         $class = new ReflectionClass(FakeInterfaceRead::class);
-        $annotation = $this->reader->getClassAnnotation($class, FooInterface::class);
-        $this->assertInstanceOf(FooClass::class, $annotation);
+        $annotation = $this->reader->getClassAnnotation($class, FakeFooInterface::class);
+        $this->assertInstanceOf(FakeFooClass::class, $annotation);
     }
 
     public function testReadIneterfaceInMethod(): void
     {
         $method = new ReflectionMethod(FakeInterfaceRead::class, 'subscribe');
-        $annotation = $this->reader->getMethodAnnotation($method, FooInterface::class);
-        $this->assertInstanceOf(FooClass::class, $annotation);
+        $annotation = $this->reader->getMethodAnnotation($method, FakeFooInterface::class);
+        $this->assertInstanceOf(FakeFooClass::class, $annotation);
         $noAttributeMethod = new ReflectionMethod(FakeInterfaceRead::class, 'noAttribute');
-        $this->assertNull($this->reader->getMethodAnnotation($noAttributeMethod, FooInterface::class));
+        $this->assertNull($this->reader->getMethodAnnotation($noAttributeMethod, FakeFooInterface::class));
     }
 
     public function testReadIneterfaceInProperty(): void
     {
         $class = new ReflectionProperty(FakeInterfaceRead::class, 'prop');
-        $annotation = $this->reader->getPropertyAnnotation($class, FooInterface::class);
-        $this->assertInstanceOf(FooClass::class, $annotation);
+        $annotation = $this->reader->getPropertyAnnotation($class, FakeFooInterface::class);
+        $this->assertInstanceOf(FakeFooClass::class, $annotation);
     }
 }
