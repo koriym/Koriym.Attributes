@@ -72,10 +72,6 @@ final class AttributeReader implements Reader
             return $object;
         }
 
-        if (interface_exists($annotationName)) {
-            return $this->seekInterface($class->getAttributes(), $annotationName);
-        }
-
         return null;
     }
 
@@ -96,10 +92,6 @@ final class AttributeReader implements Reader
             $object = $attributes[0]->newInstance();
 
             return $object;
-        }
-
-        if (interface_exists($annotationName)) {
-            return $this->seekInterface($method->getAttributes(), $annotationName);
         }
 
         return null;
@@ -136,32 +128,6 @@ final class AttributeReader implements Reader
             $object = $attributes[0]->newInstance();
 
             return $object;
-        }
-
-        if (interface_exists($annotationName)) {
-            return $this->seekInterface($property->getAttributes(), $annotationName);
-        }
-
-        return null;
-    }
-
-    /**
-     * @param array<ReflectionAttribute> $attributes
-     * @param class-string<T>            $interface
-     *
-     * @return T|null
-     *
-     * @template T of object
-     */
-    private function seekInterface(array $attributes, string $interface): ?object
-    {
-        foreach ($attributes as $attribute) {
-            if (is_subclass_of($attribute->getName(), $interface)) {
-                /** @var T $object */
-                $object =  $attribute->newInstance();
-
-                return $object;
-            }
         }
 
         return null;
