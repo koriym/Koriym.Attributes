@@ -64,7 +64,7 @@ final class AttributeReader implements Reader
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
-        $attributes = $class->getAttributes($annotationName);
+        $attributes = $class->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
             /** @var T $object */
             $object = $attributes[0]->newInstance();
@@ -90,7 +90,7 @@ final class AttributeReader implements Reader
      */
     public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
     {
-        $attributes = $method->getAttributes($annotationName);
+        $attributes = $method->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
             /** @var T $object */
             $object = $attributes[0]->newInstance();
@@ -130,7 +130,7 @@ final class AttributeReader implements Reader
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
-        $attributes = $property->getAttributes($annotationName);
+        $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
             /** @var T $object */
             $object = $attributes[0]->newInstance();
