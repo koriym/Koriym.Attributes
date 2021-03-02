@@ -58,7 +58,7 @@ Following example works with both PHP8 attribute and `doctrine/annotations`.
 
 ```diff
 use Attribute;
-+use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
++use Doctrine\Common\Annotations\NamedArgumentConstructor;
 
 /**
  * @Annotation 
