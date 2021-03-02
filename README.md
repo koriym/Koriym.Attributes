@@ -63,10 +63,11 @@ use Attribute;
 /**
  * @Annotation 
  * @Target("METHOD")
++* @NamedArgumentConstructor
  */
 +#[Attribute(Attribute::TARGET_METHOD)]
 -final class Foo
-+final class Foo implements NamedArgumentConstructorAnnotation 
++final class Foo 
 {
     public string $bar;
     public int $baz;
