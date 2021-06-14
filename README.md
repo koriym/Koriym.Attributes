@@ -67,7 +67,6 @@ use Attribute;
  */
 +#[Attribute(Attribute::TARGET_METHOD)]
 final class Foo
-final class Foo 
 {
     public string $bar;
     public int $baz;
