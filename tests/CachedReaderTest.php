@@ -18,7 +18,10 @@ class CachedReaderTest extends CompatibilityTest
     protected function setUp(): void
     {
         $this->reader = new CachedReader(
-            new AnnotationReader(),
+            new DualReader(
+                new AnnotationReader(),
+                new AttributeReader()
+            ),
             new ArrayCachePool()
         );
     }
