@@ -1,8 +1,11 @@
 <?php
 
-namespace Doctrine\Common\Annotations;
+declare(strict_types=1);
 
-use Doctrine\Common\Cache\Cache;
+namespace Koriym\Attributes;
+
+use Doctrine\Common\Annotations\Reader;
+use Psr\SimpleCache\CacheInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
@@ -12,21 +15,21 @@ use function array_merge;
 use function assert;
 use function filemtime;
 use function max;
+use function str_replace;
 use function time;
 
 /**
  * A cache aware annotation reader.
  *
- * @deprecated the CachedReader is deprecated and will be removed
- *             in version 2.0.0 of doctrine/annotations. Please use the
- *             {@see \Doctrine\Common\Annotations\PsrCachedReader} instead.
+ * This reader is taken from Doctrine\Common\Annotations and modified to update cache PSR16
+ * @see https://github.com/doctrine/annotations/blob/1.13.x/lib/Doctrine/Common/Annotations/CachedReader.php
  */
 final class CachedReader implements Reader
 {
     /** @var Reader */
     private $delegate;
 
-    /** @var Cache */
+    /** @var CacheInterface */
     private $cache;
 
     /** @var bool */
@@ -41,7 +44,7 @@ final class CachedReader implements Reader
     /**
      * @param bool $debug
      */
-    public function __construct(Reader $reader, Cache $cache, $debug = false)
+    public function __construct(Reader $reader, CacheInterface $cache, $debug = false)
     {
         $this->delegate = $reader;
         $this->cache    = $cache;
@@ -172,7 +175,8 @@ final class CachedReader implements Reader
      */
     private function fetchFromCache($cacheKey, ReflectionClass $class)
     {
-        $data = $this->cache->fetch($cacheKey);
+        $cacheKey = $this->getCacheKey($cacheKey);
+        $data = $this->cache->get($cacheKey, false);
         if ($data !== false) {
             if (! $this->debug || $this->isCacheFresh($cacheKey, $class)) {
                 return $data;
@@ -192,12 +196,13 @@ final class CachedReader implements Reader
      */
     private function saveToCache($cacheKey, $value)
     {
-        $this->cache->save($cacheKey, $value);
+        $cacheKey = $this->getCacheKey($cacheKey);
+        $this->cache->set($cacheKey, $value);
         if (! $this->debug) {
             return;
         }
 
-        $this->cache->save('[C]' . $cacheKey, time());
+        $this->cache->set('[C]' . $cacheKey, time());
     }
 
     /**
@@ -209,12 +214,13 @@ final class CachedReader implements Reader
      */
     private function isCacheFresh($cacheKey, ReflectionClass $class)
     {
+        $cacheKey = $this->getCacheKey($cacheKey);
         $lastModification = $this->getLastModification($class);
         if ($lastModification === 0) {
             return true;
         }
 
-        return $this->cache->fetch('[C]' . $cacheKey) >= $lastModification;
+        return $this->cache->get('[C]' . $cacheKey) >= $lastModification;
     }
 
     /**
@@ -264,5 +270,10 @@ final class CachedReader implements Reader
         assert($lastModificationTime !== false);
 
         return $this->loadedFilemtimes[$fileName] = $lastModificationTime;
+    }
+
+    private function getCacheKey(string $key): string
+    {
+        return str_replace('\\', '_', $key);
     }
 }
