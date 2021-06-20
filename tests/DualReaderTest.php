@@ -7,7 +7,7 @@ namespace Koriym\Attributes;
 use Doctrine\Common\Annotations\AnnotationReader;
 
 /**
- * Inherit all test of AttributeReaferTest
+ * Inherit all test of AttributeReaderTest
  */
 class DualReaderTest extends CompatibilityTest
 {
