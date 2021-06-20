@@ -79,3 +79,23 @@ final class Foo
 ```
 
 See more about annotation compatible attribute at [Constructors with Named Parameters](https://github.com/doctrine/annotations/blob/1.11.x/docs/en/custom.rst#optional-constructors-with-named-parameters)
+
+## PSR-6 compliant CachedReader
+
+As an alternative to the deprecated doctrine [CachedReader](https://github.com/doctrine/annotations/blob/1.13.x/lib/Doctrine/Common/Annotations/CachedReader.php#L20), you can also use the PSR6 compatible CacheReader that this package provides.
+
+```php
+use Cache\Adapter\PHPArray\ArrayCachePool;
+use Koriym\Attributes\CachedReader;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Koriym\Attributes\DualReader;
+use Koriym\Attributes\AttributeReader;
+
+$reader = new CachedReader(
+    new DualReader(
+        new AnnotationReader(),
+        new AttributeReader()
+    ),
+    new ArrayCachePool()
+);
+```
