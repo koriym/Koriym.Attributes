@@ -46,11 +46,12 @@ final class CachedReader implements Reader
     {
         $this->delegate = $reader;
         $this->cache    = $cache;
-        $this->debug    = (bool) $debug;
+        $this->debug    = $debug;
     }
 
     /**
      * {@inheritDoc}
+     *
      */
     public function getClassAnnotations(ReflectionClass $class)
     {
@@ -71,6 +72,14 @@ final class CachedReader implements Reader
 
     /**
      * {@inheritDoc}
+     *
+     * @param class-string<T> $annotationName
+     * @psalm-param ReflectionClass $class
+     * @phpstan-param ReflectionClass<object> $class
+     *
+     * @return T|null
+     *
+     * @template T of object
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName)
     {
@@ -105,7 +114,12 @@ final class CachedReader implements Reader
     }
 
     /**
-     * {@inheritDoc}
+     * @param ReflectionProperty $property       The ReflectionProperty to read the annotations from.
+     * @param class-string<T>    $annotationName The name of the annotation.
+     *
+     * @return T|null The Annotation or NULL, if the requested annotation does not exist.
+     *
+     * @template T
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName)
     {
@@ -140,7 +154,14 @@ final class CachedReader implements Reader
     }
 
     /**
-     * {@inheritDoc}
+     * Gets a method annotation.
+     *
+     * @param ReflectionMethod $method         The ReflectionMethod to read the annotations from.
+     * @param class-string<T>  $annotationName The name of the annotation.
+     *
+     * @return T|null The Annotation or NULL, if the requested annotation does not exist.
+     *
+     * @template T
      */
     public function getMethodAnnotation(ReflectionMethod $method, $annotationName)
     {
