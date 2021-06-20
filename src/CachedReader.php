@@ -22,6 +22,7 @@ use function time;
  * A cache aware annotation reader.
  *
  * This reader is taken from Doctrine\Common\Annotations and modified to update cache PSR16
+ *
  * @see https://github.com/doctrine/annotations/blob/1.13.x/lib/Doctrine/Common/Annotations/CachedReader.php
  */
 final class CachedReader implements Reader
@@ -41,10 +42,7 @@ final class CachedReader implements Reader
     /** @var int[] */
     private $loadedFilemtimes = [];
 
-    /**
-     * @param bool $debug
-     */
-    public function __construct(Reader $reader, CacheInterface $cache, $debug = false)
+    public function __construct(Reader $reader, CacheInterface $cache, bool $debug = false)
     {
         $this->delegate = $reader;
         $this->cache    = $cache;
@@ -157,10 +155,8 @@ final class CachedReader implements Reader
 
     /**
      * Clears loaded annotations.
-     *
-     * @return void
      */
-    public function clearLoadedAnnotations()
+    public function clearLoadedAnnotations(): void
     {
         $this->loadedAnnotations = [];
         $this->loadedFilemtimes  = [];
@@ -173,7 +169,7 @@ final class CachedReader implements Reader
      *
      * @return mixed The cached value or false when the value is not in cache.
      */
-    private function fetchFromCache($cacheKey, ReflectionClass $class)
+    private function fetchFromCache(string $cacheKey, ReflectionClass $class)
     {
         $cacheKey = $this->getCacheKey($cacheKey);
         $data = $this->cache->get($cacheKey, false);
@@ -191,10 +187,8 @@ final class CachedReader implements Reader
      *
      * @param string $cacheKey The cache key.
      * @param mixed  $value    The value.
-     *
-     * @return void
      */
-    private function saveToCache($cacheKey, $value)
+    private function saveToCache(string $cacheKey, $value): void
     {
         $cacheKey = $this->getCacheKey($cacheKey);
         $this->cache->set($cacheKey, $value);
@@ -207,12 +201,8 @@ final class CachedReader implements Reader
 
     /**
      * Checks if the cache is fresh.
-     *
-     * @param string $cacheKey
-     *
-     * @return bool
      */
-    private function isCacheFresh($cacheKey, ReflectionClass $class)
+    private function isCacheFresh(string $cacheKey, ReflectionClass $class): bool
     {
         $cacheKey = $this->getCacheKey($cacheKey);
         $lastModification = $this->getLastModification($class);
