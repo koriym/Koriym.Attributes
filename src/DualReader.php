@@ -17,7 +17,7 @@ final class DualReader implements Reader
     private $php8;
 
     /** @var Reader */
-    private $delegate;
+    private $annotationReader;
 
     /** @var Reader */
     private $attributeReader;
@@ -25,7 +25,7 @@ final class DualReader implements Reader
     public function __construct(Reader $annotationReader, Reader $attributeReader)
     {
         $this->php8 = PHP_VERSION_ID >= 80000;
-        $this->delegate = $annotationReader;
+        $this->annotationReader = $annotationReader;
         $this->attributeReader = $attributeReader;
     }
 
@@ -34,14 +34,13 @@ final class DualReader implements Reader
      */
     public function getMethodAnnotations(ReflectionMethod $method): array
     {
-        if ($this->php8) {
-            $annotations = $this->attributeReader->getMethodAnnotations($method);
-            if ($annotations) {
-                return $annotations;
-            }
+        $annotations = $this->annotationReader->getMethodAnnotations($method);
+        if (! $this->php8) {
+            return $annotations;
         }
 
-        return $this->delegate->getMethodAnnotations($method);
+        $attributes = $this->attributeReader->getMethodAnnotations($method);
+        return array_merge($annotations, $attributes);
     }
 
     /**
@@ -54,14 +53,27 @@ final class DualReader implements Reader
      */
     public function getClassAnnotations(ReflectionClass $class): array
     {
-        if ($this->php8) {
-            $annotations = $this->attributeReader->getClassAnnotations($class);
-            if ($annotations) {
-                return $annotations;
-            }
+        $annotations = $this->annotationReader->getClassAnnotations($class);
+        if (! $this->php8) {
+            return $annotations;
         }
 
-        return $this->delegate->getClassAnnotations($class);
+        $attributes = $this->attributeReader->getClassAnnotations($class);
+        return array_merge($annotations, $attributes);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPropertyAnnotations(ReflectionProperty $property): array
+    {
+        $annotations = $this->annotationReader->getPropertyAnnotations($property);
+        if (! $this->php8) {
+            return $annotations;
+        }
+
+        $attributes = $this->attributeReader->getPropertyAnnotations($property);
+        return array_merge($annotations, $attributes);
     }
 
     /**
@@ -78,13 +90,13 @@ final class DualReader implements Reader
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
         if ($this->php8) {
-            $annotation = $this->attributeReader->getClassAnnotation($class, $annotationName);
-            if ($annotation) {
-                return $annotation;
+            $attribute = $this->attributeReader->getClassAnnotation($class, $annotationName);
+            if ($attribute) {
+                return $attribute;
             }
         }
 
-        return $this->delegate->getClassAnnotation($class, $annotationName);
+        return $this->annotationReader->getClassAnnotation($class, $annotationName);
     }
 
     /**
@@ -99,22 +111,7 @@ final class DualReader implements Reader
             }
         }
 
-        return $this->delegate->getMethodAnnotation($method, $annotationName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getPropertyAnnotations(ReflectionProperty $property): array
-    {
-        if ($this->php8) {
-            $annotations = $this->attributeReader->getPropertyAnnotations($property);
-            if ($annotations) {
-                return $annotations;
-            }
-        }
-
-        return $this->delegate->getPropertyAnnotations($property);
+        return $this->annotationReader->getMethodAnnotation($method, $annotationName);
     }
 
     /**
@@ -123,12 +120,12 @@ final class DualReader implements Reader
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
         if ($this->php8) {
-            $annotations = $this->attributeReader->getPropertyAnnotation($property, $annotationName);
-            if ($annotations) {
-                return $annotations;
+            $attribute = $this->attributeReader->getPropertyAnnotation($property, $annotationName);
+            if ($attribute) {
+                return $attribute;
             }
         }
 
-        return $this->delegate->getPropertyAnnotation($property, $annotationName);
+        return $this->annotationReader->getPropertyAnnotation($property, $annotationName);
     }
 }
