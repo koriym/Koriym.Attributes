@@ -16,7 +16,7 @@ class DualReaderTest extends CompatibilityTest
 
     protected function setUp(): void
     {
-        $this->reader = new DualReader(
+        $this->attributeReader = new DualReader(
             new AnnotationReader(),
             new AttributeReader()
         );
@@ -24,7 +24,7 @@ class DualReaderTest extends CompatibilityTest
 
     public function testIsInstanceOfAttributes(): void
     {
-        $actual = $this->reader;
+        $actual = $this->attributeReader;
         $this->assertInstanceOf(DualReader::class, $actual);
     }
 }
