@@ -9,6 +9,8 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+use function array_merge;
+
 use const PHP_VERSION_ID;
 
 final class DualReader implements Reader
@@ -40,6 +42,7 @@ final class DualReader implements Reader
         }
 
         $attributes = $this->attributeReader->getMethodAnnotations($method);
+
         return array_merge($annotations, $attributes);
     }
 
@@ -59,20 +62,22 @@ final class DualReader implements Reader
         }
 
         $attributes = $this->attributeReader->getClassAnnotations($class);
+
         return array_merge($annotations, $attributes);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getPropertyAnnotations(ReflectionProperty $property): array
+    public function getPropertyAnnotations(ReflectionProperty $reflectionProperty): array
     {
-        $annotations = $this->annotationReader->getPropertyAnnotations($property);
+        $annotations = $this->annotationReader->getPropertyAnnotations($reflectionProperty);
         if (! $this->php8) {
             return $annotations;
         }
 
-        $attributes = $this->attributeReader->getPropertyAnnotations($property);
+        $attributes = $this->attributeReader->getPropertyAnnotations($reflectionProperty);
+
         return array_merge($annotations, $attributes);
     }
 

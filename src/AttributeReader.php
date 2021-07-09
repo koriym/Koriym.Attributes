@@ -10,6 +10,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+/**
+ * @see \Koriym\Attributes\AttributeReaderTest
+ */
 final class AttributeReader implements Reader
 {
     /**
@@ -97,9 +100,9 @@ final class AttributeReader implements Reader
     /**
      * {@inheritDoc}
      */
-    public function getPropertyAnnotations(ReflectionProperty $property): array
+    public function getPropertyAnnotations(ReflectionProperty $reflectionProperty): array
     {
-        $attributesRefs = $property->getAttributes();
+        $attributesRefs = $reflectionProperty->getAttributes();
         $attributes = [];
         foreach ($attributesRefs as $ref) {
             $attributes[] = $ref->newInstance();

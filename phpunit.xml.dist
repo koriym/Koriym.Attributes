@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd" bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Koriym.Attribute test suite">
             <directory>tests</directory>
             <directory phpVersion="8.0.0" phpVersionOperator=">=">tests-php8</directory>
+=======
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+    bootstrap="vendor/autoload.php"
+>
+    <testsuites>
+        <testsuite name="Koriym.Attribute test suite">
+            <directory>tests</directory>
+>>>>>>> 7641d52 (refactor tests to work with dual reader)
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">

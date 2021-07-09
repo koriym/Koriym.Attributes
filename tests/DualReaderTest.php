@@ -5,26 +5,53 @@ declare(strict_types=1);
 namespace Koriym\Attributes;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionMethod;
 
-/**
- * Inherit all test of AttributeReaferTest
- */
-class DualReaderTest extends CompatibilityTest
+final class DualReaderTest extends TestCase
 {
-    /** @var class-string */
-    protected $target = FakeDual::class;
+    /** @var DualReader */
+    private $dualReader;
+
+    /** @var ReflectionClass<FakeDual> */
+    private $fakeDualReflectionClass;
+
+    /** @var ReflectionMethod */
+    private $fakeDualReflectionMethod;
 
     protected function setUp(): void
     {
-        $this->attributeReader = new DualReader(
+        $this->dualReader = new DualReader(
             new AnnotationReader(),
             new AttributeReader()
         );
+
+        $this->fakeDualReflectionClass = new ReflectionClass(FakeDual::class);
+        $this->fakeDualReflectionMethod = new ReflectionMethod(FakeDual::class, 'setKey');
     }
 
-    public function testIsInstanceOfAttributes(): void
+    /**
+     * @requires PHP < 8.0
+     */
+    public function testLoadOnlyAnnotations(): void
     {
-        $actual = $this->attributeReader;
-        $this->assertInstanceOf(DualReader::class, $actual);
+        $classAnnotations = $this->dualReader->getClassAnnotations($this->fakeDualReflectionClass);
+        $this->assertCount(2, $classAnnotations);
+
+        $methodAnnotationsAndAttributes = $this->dualReader->getMethodAnnotations($this->fakeDualReflectionMethod);
+        $this->assertCount(1, $methodAnnotationsAndAttributes);
+    }
+
+    /**
+     * @requires PHP >= 8.0
+     */
+    public function testBoth(): void
+    {
+        $classAnnotationsAndAttributes = $this->dualReader->getClassAnnotations($this->fakeDualReflectionClass);
+        $this->assertCount(4, $classAnnotationsAndAttributes);
+
+        $methodAnnotationsAndAttributes = $this->dualReader->getMethodAnnotations($this->fakeDualReflectionMethod);
+        $this->assertCount(3, $methodAnnotationsAndAttributes);
     }
 }

@@ -33,6 +33,7 @@ class FakeDual
      * @FakeInject
      */
     #[FakeInject]
+    #[FakeFooClass]
     public function setKey(string $authKey): void // named binding
     {
     }

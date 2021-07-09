@@ -17,7 +17,7 @@ use PDO;
 
 #[FakeFooClass]
 #[FakeCacheable]
-class Fake
+class FakeAttributes
 {
     #[FakeInject]
     #[FakeFooClass]
