@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Koriym\Attributes;
+namespace Koriym\Attributes\Tests;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Koriym\Attributes\AttributeReader;
+use Koriym\Attributes\DualReader;
+use Koriym\Attributes\Tests\Fake\FakeDual;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;

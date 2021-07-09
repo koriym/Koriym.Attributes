@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Koriym\Attributes;
+namespace Koriym\Attributes\Tests\AttributeReader;
 
-use Koriym\Attributes\Annotation\FakeAbstractFoo;
+use Koriym\Attributes\AttributeReader;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeAbstractFoo;
+use Koriym\Attributes\Tests\Fake\FakeDual;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;

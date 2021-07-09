@@ -1,6 +1,6 @@
 <?php
 
-namespace Koriym\Attributes\Annotation;
+namespace Koriym\Attributes\Tests\Fake\Annotation;
 
 use Attribute;
 

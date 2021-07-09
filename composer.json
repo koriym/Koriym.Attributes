@@ -25,10 +25,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Koriym\\Attributes\\": [
-                "tests/",
-                "tests/Fake"
-            ]
+            "Koriym\\Attributes\\Tests\\": "tests"
         }
     },
     "scripts": {

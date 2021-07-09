@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Koriym\Attributes;
+namespace Koriym\Attributes\Tests\Fake;
 
-use Koriym\Attributes\Annotation\FakeCacheable;
-use Koriym\Attributes\Annotation\FakeFooClass;
-use Koriym\Attributes\Annotation\FakeHttpCache;
-use Koriym\Attributes\Annotation\FakeInject;
-use Koriym\Attributes\Annotation\FakeLoggable;
-use Koriym\Attributes\Annotation\FakeTransactional;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeCacheable;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeFooClass;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeHttpCache;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeInject;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeLoggable;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeTransactional;
 
 #[FakeFooClass]
 #[FakeCacheable]

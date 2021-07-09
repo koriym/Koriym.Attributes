@@ -2,25 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Koriym\Attributes;
+namespace Koriym\Attributes\Tests\AttributeReader;
 
-use Koriym\Attributes\Annotation\FakeCacheable;
-use Koriym\Attributes\Annotation\FakeFooClass;
-use Koriym\Attributes\Annotation\FakeFooInterface;
-use Koriym\Attributes\Annotation\FakeHttpCache;
-use Koriym\Attributes\Annotation\FakeInject;
-use Koriym\Attributes\Annotation\FakeLoggable;
-use Koriym\Attributes\Annotation\FakeNotExists;
-use Koriym\Attributes\Annotation\FakeTransactional;
+use Koriym\Attributes\AttributeReader;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeFooClass;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeFooInterface;
+use Koriym\Attributes\Tests\Fake\FakeInterfaceRead;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-use function array_map;
-use function get_class;
-
-final class AttributeReaderInterfaceTest extends TestCase
+/**
+ * @requires PHP >= 8.0
+ */
+final class ReadingInterfaceTest extends TestCase
 {
     /** @var AttributeReader */
     private $attributeReader;
