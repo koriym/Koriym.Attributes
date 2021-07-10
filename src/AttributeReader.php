@@ -100,9 +100,9 @@ final class AttributeReader implements Reader
     /**
      * {@inheritDoc}
      */
-    public function getPropertyAnnotations(ReflectionProperty $reflectionProperty): array
+    public function getPropertyAnnotations(ReflectionProperty $property): array
     {
-        $attributesRefs = $reflectionProperty->getAttributes();
+        $attributesRefs = $property->getAttributes();
         $attributes = [];
         foreach ($attributesRefs as $ref) {
             $attributes[] = $ref->newInstance();

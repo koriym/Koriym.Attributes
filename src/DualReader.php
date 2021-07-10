@@ -69,14 +69,14 @@ final class DualReader implements Reader
     /**
      * {@inheritDoc}
      */
-    public function getPropertyAnnotations(ReflectionProperty $reflectionProperty): array
+    public function getPropertyAnnotations(ReflectionProperty $property): array
     {
-        $annotations = $this->annotationReader->getPropertyAnnotations($reflectionProperty);
+        $annotations = $this->annotationReader->getPropertyAnnotations($property);
         if (! $this->php8) {
             return $annotations;
         }
 
-        $attributes = $this->attributeReader->getPropertyAnnotations($reflectionProperty);
+        $attributes = $this->attributeReader->getPropertyAnnotations($property);
 
         return array_merge($annotations, $attributes);
     }
