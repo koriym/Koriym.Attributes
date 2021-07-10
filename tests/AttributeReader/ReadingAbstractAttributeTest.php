@@ -12,7 +12,10 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-final class AttributeReaderAbstractAttributesTest extends TestCase
+/**
+ * @requires PHP 8.0
+ */
+final class ReadingAbstractAttributeTest extends TestCase
 {
     /** @var AttributeReader */
     private $attributeReader;

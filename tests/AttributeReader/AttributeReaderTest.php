@@ -22,7 +22,7 @@ use function array_map;
 use function get_class;
 
 /**
- * @requires PHP >= 8.0
+ * @requires PHP 8.0
  */
 final class AttributeReaderTest extends TestCase
 {
