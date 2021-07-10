@@ -7,10 +7,14 @@ namespace Koriym\Attributes\Tests;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Koriym\Attributes\AttributeReader;
 use Koriym\Attributes\DualReader;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeFooClass;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeInject;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeNotExists;
 use Koriym\Attributes\Tests\Fake\FakeDual;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionProperty;
 
 final class DualReaderTest extends TestCase
 {
@@ -18,10 +22,13 @@ final class DualReaderTest extends TestCase
     private $dualReader;
 
     /** @var ReflectionClass<FakeDual> */
-    private $fakeDualReflectionClass;
+    private $reflectionClass;
 
     /** @var ReflectionMethod */
-    private $fakeDualReflectionMethod;
+    private $reflectionMethod;
+
+    /** @var ReflectionProperty */
+    private $reflectionProperty;
 
     protected function setUp(): void
     {
@@ -30,8 +37,9 @@ final class DualReaderTest extends TestCase
             new AttributeReader()
         );
 
-        $this->fakeDualReflectionClass = new ReflectionClass(FakeDual::class);
-        $this->fakeDualReflectionMethod = new ReflectionMethod(FakeDual::class, 'setKey');
+        $this->reflectionClass = new ReflectionClass(FakeDual::class);
+        $this->reflectionMethod = new ReflectionMethod(FakeDual::class, 'setKey');
+        $this->reflectionProperty = new ReflectionProperty(FakeDual::class, 'prop');
     }
 
     /**
@@ -39,11 +47,14 @@ final class DualReaderTest extends TestCase
      */
     public function testLoadOnlyAnnotations(): void
     {
-        $classAnnotations = $this->dualReader->getClassAnnotations($this->fakeDualReflectionClass);
+        $classAnnotations = $this->dualReader->getClassAnnotations($this->reflectionClass);
         $this->assertCount(2, $classAnnotations);
 
-        $methodAnnotationsAndAttributes = $this->dualReader->getMethodAnnotations($this->fakeDualReflectionMethod);
-        $this->assertCount(1, $methodAnnotationsAndAttributes);
+        $methodAnnotations = $this->dualReader->getMethodAnnotations($this->reflectionMethod);
+        $this->assertCount(1, $methodAnnotations);
+
+        $propertyAnnotations = $this->dualReader->getPropertyAnnotations($this->reflectionProperty);
+        $this->assertCount(2, $propertyAnnotations);
     }
 
     /**
@@ -51,10 +62,40 @@ final class DualReaderTest extends TestCase
      */
     public function testBoth(): void
     {
-        $classAnnotationsAndAttributes = $this->dualReader->getClassAnnotations($this->fakeDualReflectionClass);
+        $classAnnotationsAndAttributes = $this->dualReader->getClassAnnotations($this->reflectionClass);
         $this->assertCount(4, $classAnnotationsAndAttributes);
 
-        $methodAnnotationsAndAttributes = $this->dualReader->getMethodAnnotations($this->fakeDualReflectionMethod);
+        $methodAnnotationsAndAttributes = $this->dualReader->getMethodAnnotations($this->reflectionMethod);
         $this->assertCount(3, $methodAnnotationsAndAttributes);
+
+        $propertyAnnotations = $this->dualReader->getPropertyAnnotations($this->reflectionProperty);
+        $this->assertCount(4, $propertyAnnotations);
+    }
+
+    public function testClass(): void
+    {
+        $foundAnnotation = $this->dualReader->getClassAnnotation($this->reflectionClass, FakeFooClass::class);
+        $this->assertInstanceOf(FakeFooClass::class, $foundAnnotation);
+
+        $missingAnnotation = $this->dualReader->getClassAnnotation($this->reflectionClass, FakeNotExists::class);
+        $this->assertNull($missingAnnotation);
+    }
+
+    public function testMethod(): void
+    {
+        $fakeInjectAnnotation = $this->dualReader->getMethodAnnotation($this->reflectionMethod, FakeInject::class);
+        $this->assertInstanceOf(FakeInject::class, $fakeInjectAnnotation);
+
+        $missingAnnotation = $this->dualReader->getMethodAnnotation($this->reflectionMethod, FakeNotExists::class);
+        $this->assertNull($missingAnnotation);
+    }
+
+    public function testProperty(): void
+    {
+        $fakeInjectAnnotation = $this->dualReader->getPropertyAnnotation($this->reflectionProperty, FakeInject::class);
+        $this->assertInstanceOf(FakeInject::class, $fakeInjectAnnotation);
+
+        $missingAnnotation = $this->dualReader->getPropertyAnnotation($this->reflectionProperty, FakeNotExists::class);
+        $this->assertNull($missingAnnotation);
     }
 }
