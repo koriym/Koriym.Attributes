@@ -20,16 +20,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Koriym\\Attributes\\": "src/"
+            "Koriym\\Attributes\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Koriym\\Attributes\\": [
-                "tests/",
-                "tests/Fake",
-                "tests-php8"
-            ]
+            "Koriym\\Attributes\\Tests\\": "tests"
         }
     },
     "scripts": {

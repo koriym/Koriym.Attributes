@@ -10,6 +10,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+/**
+ * @see \Koriym\Attributes\AttributeReaderTest
+ */
 final class AttributeReader implements Reader
 {
     /**

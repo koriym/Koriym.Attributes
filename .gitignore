@@ -1,8 +1,8 @@
 /vendor/
 /build/
-/composer.lock
-/phpunit.xml
-/.phpunit.result.cache
 /coverage.xml
 /vendor-bin/**/vendor
-/.phpcs-cache
+.phpcs-cache
+phpunit.xml
+.phpunit.result.cache
+composer.lock

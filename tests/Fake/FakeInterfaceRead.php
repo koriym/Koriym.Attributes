@@ -1,9 +1,9 @@
 <?php
 
-namespace Koriym\Attributes;
+namespace Koriym\Attributes\Tests\Fake;
 
-use Koriym\Attributes\Annotation\FakeFooClass;
-use Koriym\Attributes\Annotation\FooClassFake;
+use Koriym\Attributes\Tests\Fake\Annotation\FakeFooClass;
+use Koriym\Attributes\Tests\Fake\Annotation\FooClassFake;
 
 /**
  * @FakeFooClass
