@@ -69,7 +69,7 @@ final class DualReaderTest extends TestCase
         $this->assertCount(2, $methodAnnotationsAndAttributes);
 
         $propertyAnnotations = $this->dualReader->getPropertyAnnotations($this->reflectionProperty);
-        $this->assertCount(2, $propertyAnnotations);
+        $this->assertCount(3, $propertyAnnotations);
     }
 
     public function testClass(): void

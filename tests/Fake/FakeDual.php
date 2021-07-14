@@ -25,7 +25,7 @@ class FakeDual
      *
      * @var string
      */
-    #[FakeInject]
+    #[FakeInject(optional: true)]
     #[FakeFooClass]
     public $prop;
 
