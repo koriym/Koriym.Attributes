@@ -10,8 +10,10 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 use function array_merge;
+use function array_unique;
 
 use const PHP_VERSION_ID;
+use const SORT_REGULAR;
 
 final class DualReader implements Reader
 {
@@ -43,7 +45,7 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getMethodAnnotations($method);
 
-        return array_merge($annotations, $attributes);
+        return array_unique(array_merge($annotations, $attributes), SORT_REGULAR);
     }
 
     /**
@@ -63,7 +65,7 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getClassAnnotations($class);
 
-        return array_merge($annotations, $attributes);
+        return array_unique(array_merge($annotations, $attributes), SORT_REGULAR);
     }
 
     /**
@@ -78,7 +80,7 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getPropertyAnnotations($property);
 
-        return array_merge($annotations, $attributes);
+        return array_unique(array_merge($annotations, $attributes), SORT_REGULAR);
     }
 
     /**
