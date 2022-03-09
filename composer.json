@@ -58,5 +58,8 @@
         "allow-plugins": {
             "bamarni/composer-bin-plugin": true
         }
+    },
+    "suggest": {
+        "koriym/param-reader": "An attribute/annotation reader for parameters"
     }
 }
