@@ -12,7 +12,7 @@ use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
 final class FakeHttpCache implements NamedArgumentConstructorAnnotation
 {
     public $isPrivate;
-    public $maxAg;
+    public $maxAge;
     public function __construct($isPrivate = false, $maxAge = 0)
     {
         $this->isPrivate = $isPrivate;
