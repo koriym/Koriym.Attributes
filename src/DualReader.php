@@ -114,11 +114,11 @@ final class DualReader implements Reader
         if ($this->php8) {
             $annotations = $this->attributeReader->getMethodAnnotation($method, $annotationName);
             if ($annotations) {
-                return $annotations;
+                return $annotations; // @phpstan-ignore-line
             }
         }
 
-        return $this->annotationReader->getMethodAnnotation($method, $annotationName);
+        return $this->annotationReader->getMethodAnnotation($method, $annotationName); // @phpstan-ignore-line
     }
 
     /**
@@ -129,10 +129,10 @@ final class DualReader implements Reader
         if ($this->php8) {
             $attribute = $this->attributeReader->getPropertyAnnotation($property, $annotationName);
             if ($attribute) {
-                return $attribute;
+                return $attribute; // @phpstan-ignore-line
             }
         }
 
-        return $this->annotationReader->getPropertyAnnotation($property, $annotationName);
+        return $this->annotationReader->getPropertyAnnotation($property, $annotationName); // @phpstan-ignore-line
     }
 }
