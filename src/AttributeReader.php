@@ -34,9 +34,7 @@ final class AttributeReader implements Reader
      * @phpstan-param ReflectionClass<object> $class
      *
      * @return array<object>
-     *
-     * @template T of object
-     */
+     **/
     public function getClassAnnotations(ReflectionClass $class): array
     {
         $attributesRefs = $class->getAttributes();
@@ -113,21 +111,12 @@ final class AttributeReader implements Reader
 
     /**
      * {@inheritDoc}
-     *
-     * @param class-string<T> $annotationName
-     *
-     * @return T|null
-     *
-     * @template T of object
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
         $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
-            /** @var T $object */
-            $object = $attributes[0]->newInstance();
-
-            return $object;
+            return $attributes[0]->newInstance(); // @phpstan-ignore-line
         }
 
         return null;
