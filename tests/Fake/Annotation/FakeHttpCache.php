@@ -3,13 +3,14 @@
 namespace Koriym\Attributes\Tests\Fake\Annotation;
 
 use Attribute;
-use Doctrine\Common\Annotations\NamedArgumentConstructorAnnotation;
+use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
 
 /**
  * @Annotation
+ * @NamedArgumentConstructor
  */
 #[Attribute]
-final class FakeHttpCache implements NamedArgumentConstructorAnnotation
+final class FakeHttpCache
 {
     public $isPrivate;
     public $maxAg;
