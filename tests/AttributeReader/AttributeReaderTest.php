@@ -21,9 +21,7 @@ use ReflectionProperty;
 use function array_map;
 use function get_class;
 
-/**
- * @requires PHP 8.0
- */
+/** @requires PHP 8.0 */
 final class AttributeReaderTest extends TestCase
 {
     /** @var AttributeReader */
@@ -106,7 +104,7 @@ final class AttributeReaderTest extends TestCase
 
         $this->assertNull($this->attributeReader->getMethodAnnotation(
             $this->reflectionMethod,
-            FakeNotExists::class
+            FakeNotExists::class,
         ));
 
         $this->assertNull($this->attributeReader->getPropertyAnnotation($this->reflectionProperty, FakeNotExists::class));

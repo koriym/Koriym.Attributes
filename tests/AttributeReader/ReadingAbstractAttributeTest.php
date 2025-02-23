@@ -12,9 +12,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/**
- * @requires PHP 8.0
- */
+/** @requires PHP 8.0 */
 final class ReadingAbstractAttributeTest extends TestCase
 {
     /** @var AttributeReader */
@@ -47,7 +45,7 @@ final class ReadingAbstractAttributeTest extends TestCase
     {
         $methodAttribute = $this->attributeReader->getMethodAnnotation(
             $this->methodReflection,
-            FakeAbstractFoo::class
+            FakeAbstractFoo::class,
         );
         $this->assertInstanceOf(FakeAbstractFoo::class, $methodAttribute);
     }
