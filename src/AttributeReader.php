@@ -28,11 +28,10 @@ final class AttributeReader implements Reader
     }
 
     /**
-     * @psalm-param ReflectionClass $class
-     * @phpstan-param ReflectionClass<object> $class
+     * @param ReflectionClass<object> $class
      *
      * @return array<object>
-     **/
+     */
     public function getClassAnnotations(ReflectionClass $class): array
     {
         $attributesRefs = $class->getAttributes();
@@ -46,17 +45,12 @@ final class AttributeReader implements Reader
     }
 
     /**
-     * {@inheritDoc}
+     * @param ReflectionClass<object> $class
+     * @param class-string<T>         $annotationName
      *
-     * @param class-string<T> $annotationName
-     * @psalm-param ReflectionClass $class
-     * @phpstan-param ReflectionClass<object> $class
-     *
-     * @psalm-return object|null
-     * @phpstan-return T
+     * @return T|null
      *
      * @template T of object
-     * @psalm-suppress ImplementedReturnTypeMismatch
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
     {
@@ -72,11 +66,9 @@ final class AttributeReader implements Reader
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @param class-string<T> $annotationName
      *
-     * @return T
+     * @return T|null
      *
      * @template T of object
      */
@@ -108,13 +100,17 @@ final class AttributeReader implements Reader
     }
 
     /**
-     * {@inheritDoc}
+     * @param class-string<T> $annotationName
+     *
+     * @return T|null
+     *
+     * @template T of object
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
         $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
-            return $attributes[0]->newInstance(); // @phpstan-ignore-line
+            return $attributes[0]->newInstance();
         }
 
         return null;

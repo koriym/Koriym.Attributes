@@ -108,31 +108,43 @@ final class DualReader implements Reader
 
     /**
      * {@inheritDoc}
+     *
+     * @param class-string<T> $annotationName
+     *
+     * @return T|null
+     *
+     * @template T of object
      */
     public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
     {
         if ($this->php8) {
             $annotations = $this->attributeReader->getMethodAnnotation($method, $annotationName);
             if ($annotations) {
-                return $annotations; // @phpstan-ignore-line
+                return $annotations;
             }
         }
 
-        return $this->annotationReader->getMethodAnnotation($method, $annotationName); // @phpstan-ignore-line
+        return $this->annotationReader->getMethodAnnotation($method, $annotationName);
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @param class-string<T> $annotationName
+     *
+     * @return T|null
+     *
+     * @template T of object
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
     {
         if ($this->php8) {
             $attribute = $this->attributeReader->getPropertyAnnotation($property, $annotationName);
             if ($attribute) {
-                return $attribute; // @phpstan-ignore-line
+                return $attribute;
             }
         }
 
-        return $this->annotationReader->getPropertyAnnotation($property, $annotationName); // @phpstan-ignore-line
+        return $this->annotationReader->getPropertyAnnotation($property, $annotationName);
     }
 }
