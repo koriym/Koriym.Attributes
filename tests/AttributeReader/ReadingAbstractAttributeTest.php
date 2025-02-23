@@ -45,7 +45,7 @@ final class ReadingAbstractAttributeTest extends TestCase
     {
         $methodAttribute = $this->attributeReader->getMethodAnnotation(
             $this->methodReflection,
-            FakeAbstractFoo::class,
+            FakeAbstractFoo::class
         );
         $this->assertInstanceOf(FakeAbstractFoo::class, $methodAttribute);
     }

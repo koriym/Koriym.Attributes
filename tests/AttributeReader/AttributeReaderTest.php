@@ -104,7 +104,7 @@ final class AttributeReaderTest extends TestCase
 
         $this->assertNull($this->attributeReader->getMethodAnnotation(
             $this->reflectionMethod,
-            FakeNotExists::class,
+            FakeNotExists::class
         ));
 
         $this->assertNull($this->attributeReader->getPropertyAnnotation($this->reflectionProperty, FakeNotExists::class));

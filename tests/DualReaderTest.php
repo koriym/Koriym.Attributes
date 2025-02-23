@@ -34,7 +34,7 @@ final class DualReaderTest extends TestCase
     {
         $this->dualReader = new DualReader(
             new AnnotationReader(),
-            new AttributeReader(),
+            new AttributeReader()
         );
 
         $this->reflectionClass = new ReflectionClass(FakeDual::class);
