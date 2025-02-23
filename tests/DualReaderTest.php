@@ -42,9 +42,7 @@ final class DualReaderTest extends TestCase
         $this->reflectionProperty = new ReflectionProperty(FakeDual::class, 'prop');
     }
 
-    /**
-     * @requires PHP < 8.0
-     */
+    /** @requires PHP < 8.0 */
     public function testLoadOnlyAnnotations(): void
     {
         $classAnnotations = $this->dualReader->getClassAnnotations($this->reflectionClass);
@@ -57,9 +55,7 @@ final class DualReaderTest extends TestCase
         $this->assertCount(2, $propertyAnnotations);
     }
 
-    /**
-     * @requires PHP >= 8.0
-     */
+    /** @requires PHP >= 8.0 */
     public function testBoth(): void
     {
         $classAnnotationsAndAttributes = $this->dualReader->getClassAnnotations($this->reflectionClass);
