@@ -45,6 +45,10 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getMethodAnnotations($method);
 
+        if (count($annotations) === 0) {
+            return $attributes;
+        }
+
         return array_unique(array_merge($annotations, $attributes), SORT_REGULAR);
     }
 
@@ -65,6 +69,10 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getClassAnnotations($class);
 
+        if (count($annotations) === 0) {
+            return $attributes;
+        }
+
         return array_unique(array_merge($annotations, $attributes), SORT_REGULAR);
     }
 
@@ -79,6 +87,10 @@ final class DualReader implements Reader
         }
 
         $attributes = $this->attributeReader->getPropertyAnnotations($property);
+
+        if (count($annotations) === 0) {
+            return $attributes;
+        }
 
         return array_unique(array_merge($annotations, $attributes), SORT_REGULAR);
     }
