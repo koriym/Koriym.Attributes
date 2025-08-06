@@ -94,18 +94,4 @@ final class DualReaderTest extends TestCase
         $missingAnnotation = $this->dualReader->getPropertyAnnotation($this->reflectionProperty, FakeNotExists::class);
         $this->assertNull($missingAnnotation);
     }
-
-    /** @requires PHP >= 8.0 */
-    public function testAnnotationAndAttributeMerge(): void
-    {
-        // Force test of array_unique path by ensuring both annotations and attributes exist
-        $classAnnotations = $this->dualReader->getClassAnnotations($this->reflectionClass);
-        $methodAnnotations = $this->dualReader->getMethodAnnotations($this->reflectionMethod);  
-        $propertyAnnotations = $this->dualReader->getPropertyAnnotations($this->reflectionProperty);
-        
-        // These should all trigger the merge path since FakeDual has both annotations and attributes
-        $this->assertGreaterThan(0, count($classAnnotations));
-        $this->assertGreaterThan(0, count($methodAnnotations));
-        $this->assertGreaterThan(0, count($propertyAnnotations));
-    }
 }

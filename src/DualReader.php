@@ -11,7 +11,6 @@ use ReflectionProperty;
 
 use function array_merge;
 use function array_unique;
-use function count;
 
 use const PHP_VERSION_ID;
 use const SORT_REGULAR;
@@ -46,7 +45,7 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getMethodAnnotations($method);
 
-        if (empty($annotations)) {
+        if (count($annotations) === 0) {
             return $attributes;
         }
 
@@ -70,7 +69,7 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getClassAnnotations($class);
 
-        if (empty($annotations)) {
+        if (count($annotations) === 0) {
             return $attributes;
         }
 
@@ -89,7 +88,7 @@ final class DualReader implements Reader
 
         $attributes = $this->attributeReader->getPropertyAnnotations($property);
 
-        if (empty($annotations)) {
+        if (count($annotations) === 0) {
             return $attributes;
         }
 
