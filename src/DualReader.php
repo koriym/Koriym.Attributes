@@ -11,6 +11,7 @@ use ReflectionProperty;
 
 use function array_merge;
 use function array_unique;
+use function count;
 
 use const PHP_VERSION_ID;
 use const SORT_REGULAR;
