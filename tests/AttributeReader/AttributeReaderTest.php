@@ -19,9 +19,7 @@ use ReflectionMethod;
 use ReflectionProperty;
 
 use function array_map;
-use function get_class;
 
-/** @requires PHP 8.0 */
 final class AttributeReaderTest extends TestCase
 {
     /** @var AttributeReader */
@@ -56,7 +54,7 @@ final class AttributeReaderTest extends TestCase
         $foundAttributes = $this->attributeReader->getClassAnnotations($this->reflectionClass);
 
         $foundAttributeClasses = array_map(static function (object $attribute): string {
-            return get_class($attribute);
+            return $attribute::class;
         }, $foundAttributes);
 
         $expectedAttributeClasses = [FakeFooClass::class, FakeCacheable::class];
@@ -118,7 +116,7 @@ final class AttributeReaderTest extends TestCase
     private function resolveAttributeClasses(array $foundAttributes): array
     {
         return array_map(static function (object $attribute): string {
-            return get_class($attribute);
+            return $attribute::class;
         }, $foundAttributes);
     }
 }

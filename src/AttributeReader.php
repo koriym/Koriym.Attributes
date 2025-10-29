@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Koriym\Attributes;
 
-use Doctrine\Common\Annotations\Reader;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/** @see \Koriym\Attributes\AttributeReaderTest */
-final class AttributeReader implements Reader
+final class AttributeReader implements AttributeReaderInterface
 {
     /**
      * {@inheritDoc}
@@ -52,7 +50,7 @@ final class AttributeReader implements Reader
      *
      * @template T of object
      */
-    public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
+    public function getClassAnnotation(ReflectionClass $class, $annotationName): object|null
     {
         $attributes = $class->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
@@ -72,7 +70,7 @@ final class AttributeReader implements Reader
      *
      * @template T of object
      */
-    public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
+    public function getMethodAnnotation(ReflectionMethod $method, $annotationName): object|null
     {
         $attributes = $method->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
@@ -106,7 +104,7 @@ final class AttributeReader implements Reader
      *
      * @template T of object
      */
-    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
+    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): object|null
     {
         $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {

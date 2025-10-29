@@ -6,76 +6,69 @@
 ![Static Analysis](https://github.com/koriym/Koriym.Attributes/workflows/Static%20Analysis/badge.svg)
 ![Coding Standards](https://github.com/koriym/Koriym.Attributes/workflows/Coding%20Standards/badge.svg)
 
-A `koriym/attributes` dual reader implements doctrine/annotation [Reader](https://github.com/doctrine/annotations/blob/master/lib/Doctrine/Common/Annotations/Reader.php) interface
-in order to read both doctrine/annotation and PHP 8 attributes.
+A PHP 8 attribute reader that provides a familiar interface compatible with `doctrine/annotations` Reader interface.
 
-Doctrine annotations are different by design than PHP core one. 
-Not all attributes can be read by this reader (ex. parameters), and not all doctrine/annotations can be read by this reader either. (ex. nested annotations)
+## Why version 2.x?
 
-However, This reader help you to code forward compatible that supports both PHP 7.x annotations and 8.x attributes in certain senario.
+The `doctrine/annotations` library has been [abandoned](https://github.com/doctrine/annotations) as PHP 8 introduced native attributes. However, many existing codebases still rely on the `Reader` interface pattern.
+
+Version 2.x was created to:
+- Remove the abandoned `doctrine/annotations` dependency
+- Provide a smooth migration path for existing code
+- Maintain the familiar `Reader` interface that developers already know
+- Support only PHP 8.1+, taking full advantage of native attributes
+
+This allows you to migrate from Doctrine annotations to native PHP 8 attributes with minimal code changes.
 
 ## Installation
 
-    composer require koriym/attributes
+    composer require koriym/attributes ^2.0
+
+## Requirements
+
+- PHP 8.1 or later
 
 ## Usage
 
 Create the reader instance.
 
 ```php
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\Reader;
-use Koriym\Attributes\DualReader;
 use Koriym\Attributes\AttributeReader;
+use Koriym\Attributes\AttributeReaderInterface;
 
-$reader = new DualReader(
-    new AnnotationReader(),
-    new AttributeReader()
-);
-assert($reader instanceof Reader);
+$reader = new AttributeReader();
+assert($reader instanceof AttributeReaderInterface);
 ```
 
-The reader can read both annotations and attributes.
+The reader provides the following methods for reading PHP 8 attributes:
 
-## Compatible Annotation
+```php
+// Read class attributes
+$classAttributes = $reader->getClassAnnotations($reflection);
+$specificAttribute = $reader->getClassAnnotation($reflection, MyAttribute::class);
 
-Existing doctrine annotations can be changed into annotations that work for both doctrine annotation and PHP8 attributes.
+// Read method attributes
+$methodAttributes = $reader->getMethodAnnotations($reflection);
+$specificAttribute = $reader->getMethodAnnotation($reflection, MyAttribute::class);
 
-Add `#[Attribute]` attribute.
+// Read property attributes
+$propertyAttributes = $reader->getPropertyAnnotations($reflection);
+$specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::class);
+```
+
+## Smooth Migration
+
+If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can migrate smoothly:
 
 ```diff
-use Attribute;
+-use Doctrine\Common\Annotations\Reader;
++use Koriym\Attributes\AttributeReaderInterface;
 
-/** @Annotation */
-+#[Attribute]
-final class Foo
+-public function __construct(Reader $reader)
++public function __construct(AttributeReaderInterface $reader)
 {
+    $this->reader = $reader;
 }
 ```
 
-Then add constructor when annotation has properties.
-Following example works with both PHP8 attribute and `doctrine/annotations`.
-
-```diff
-use Attribute;
-+use Doctrine\Common\Annotations\NamedArgumentConstructor;
-
-/**
- * @Annotation 
- * @Target("METHOD")
-+* @NamedArgumentConstructor
- */
-+#[Attribute(Attribute::TARGET_METHOD)]
-final class Foo
-{
-    public string $bar;
-    public int $baz;
-+    public function __construct(string $bar = '', int $baz = 0)
-+    {
-+        $this->bar = $bar;
-+        $this->baz = $baz;
-+    }
-}
-```
-
-See more about annotation compatible attribute at [Constructors with Named Parameters](https://github.com/doctrine/annotations/blob/1.11.x/docs/en/custom.rst#optional-constructors-with-named-parameters)
+The interface methods remain the same, so your existing code continues to work without changes.
