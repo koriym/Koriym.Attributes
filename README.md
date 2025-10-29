@@ -56,9 +56,41 @@ $propertyAttributes = $reader->getPropertyAnnotations($reflection);
 $specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::class);
 ```
 
-## Smooth Migration
+## Migrating from 1.x to 2.x
 
-If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can migrate smoothly:
+### Automated Migration with Rector
+
+The easiest way to migrate is using [Rector](https://getrector.com/), inspired by [Doctrine's migration approach](https://www.doctrine-project.org/2022/11/04/annotations-to-attributes.html):
+
+1. **Install Rector:**
+   ```bash
+   composer require --dev rector/rector
+   ```
+
+2. **Download the migration config:**
+   ```bash
+   curl -O https://raw.githubusercontent.com/koriym/Koriym.Attributes/2.x/rector-migrate.php
+   ```
+
+3. **Run the migration:**
+   ```bash
+   vendor/bin/rector process --config=rector-migrate.php
+   ```
+
+4. **Review and test:**
+   - Review the changes made by Rector
+   - Run your tests to ensure everything works
+   - If you have custom `AttributeReaderInterface` implementations, manually add `string` type to `$annotationName` parameters
+
+5. **Clean up (optional):**
+   ```bash
+   composer remove --dev rector/rector
+   rm rector-migrate.php
+   ```
+
+### Manual Migration
+
+If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can migrate manually:
 
 ```diff
 -use Doctrine\Common\Annotations\Reader;
@@ -69,6 +101,21 @@ If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can mi
 {
     $this->reader = $reader;
 }
+```
+
+**If you have custom implementations** of the reader interface, add explicit `string` type:
+
+```diff
+ use Koriym\Attributes\AttributeReaderInterface;
+
+ class MyCustomReader implements AttributeReaderInterface
+ {
+-    public function getClassAnnotation(ReflectionClass $class, $annotationName): object|null
++    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null
+     {
+         // your implementation
+     }
+ }
 ```
 
 The interface methods remain the same, so your existing code continues to work without changes.
