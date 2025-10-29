@@ -6,23 +6,22 @@
 ![Static Analysis](https://github.com/koriym/Koriym.Attributes/workflows/Static%20Analysis/badge.svg)
 ![Coding Standards](https://github.com/koriym/Koriym.Attributes/workflows/Coding%20Standards/badge.svg)
 
-A PHP 8 attribute reader that provides a familiar interface compatible with `doctrine/annotations` Reader interface.
+A PHP 8 attribute reader that provides a familiar interface compatible with the `doctrine/annotations` Reader pattern.
+
+## Why use this library?
 
 This library serves two purposes:
-1. **Migration tool** - Smooth transition from Doctrine Annotations to native PHP 8 attributes
-2. **Architectural pattern** - Abstraction layer for dependency injection, testability, and extensibility
 
-## Why version 2.x?
+**1. Migration tool** - The `doctrine/annotations` library has been [abandoned](https://github.com/doctrine/annotations) as PHP 8 introduced native attributes. This library provides a smooth migration path from Doctrine Annotations to native PHP 8 attributes with minimal code changes.
 
-The `doctrine/annotations` library has been [abandoned](https://github.com/doctrine/annotations) as PHP 8 introduced native attributes. However, many existing codebases still rely on the `Reader` interface pattern.
+**2. Architectural pattern** - Provides an abstraction layer for dependency injection, testability, and extensibility. Your code depends on `AttributeReaderInterface`, not directly on PHP's Reflection API.
 
-Version 2.x was created to:
-- Remove the abandoned `doctrine/annotations` dependency
-- Provide a smooth migration path for existing code
-- Maintain the familiar `Reader` interface that developers already know
-- Support only PHP 8.1+, taking full advantage of native attributes
+### What's new in 2.x?
 
-This allows you to migrate from Doctrine annotations to native PHP 8 attributes with minimal code changes.
+- Removed `doctrine/annotations` dependency (no longer needed)
+- Removed `DualReader` class (PHP 8+ only)
+- Requires PHP 8.1+ (taking full advantage of native attributes)
+- Modern type hints with union types
 
 ## Installation
 
@@ -34,17 +33,16 @@ This allows you to migrate from Doctrine annotations to native PHP 8 attributes 
 
 ## Usage
 
-Create the reader instance.
+Create an `AttributeReader` instance:
 
 ```php
 use Koriym\Attributes\AttributeReader;
 use Koriym\Attributes\AttributeReaderInterface;
 
 $reader = new AttributeReader();
-assert($reader instanceof AttributeReaderInterface);
 ```
 
-The reader provides the following methods for reading PHP 8 attributes:
+The reader provides methods for reading PHP 8 attributes with the familiar Reader interface:
 
 ```php
 // Read class attributes
@@ -60,7 +58,7 @@ $propertyAttributes = $reader->getPropertyAnnotations($reflection);
 $specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::class);
 ```
 
-## Migrating from 1.x to 2.x
+## Migration Guide
 
 ### Automated Migration with Rector
 
@@ -126,7 +124,9 @@ If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can mi
      {
          // your implementation
      }
+
++    // Same for getMethodAnnotation() and getPropertyAnnotation()
  }
 ```
 
-The interface methods remain the same, so your existing code continues to work without changes.
+For most users (those consuming the interface, not implementing it), your existing code continues to work without changes.
