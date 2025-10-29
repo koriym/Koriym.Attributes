@@ -8,6 +8,10 @@
 
 A PHP 8 attribute reader that provides a familiar interface compatible with `doctrine/annotations` Reader interface.
 
+This library serves two purposes:
+1. **Migration tool** - Smooth transition from Doctrine Annotations to native PHP 8 attributes
+2. **Architectural pattern** - Abstraction layer for dependency injection, testability, and extensibility
+
 ## Why version 2.x?
 
 The `doctrine/annotations` library has been [abandoned](https://github.com/doctrine/annotations) as PHP 8 introduced native attributes. However, many existing codebases still rely on the `Reader` interface pattern.
