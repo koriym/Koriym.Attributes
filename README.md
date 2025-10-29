@@ -60,11 +60,11 @@ $specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::cl
 
 ### Automated Migration with Rector
 
-The easiest way to migrate is using [Rector](https://getrector.com/), inspired by [Doctrine's migration approach](https://www.doctrine-project.org/2022/11/04/annotations-to-attributes.html):
+The easiest way to migrate is using [Rector](https://getrector.com/), following [Doctrine's migration approach](https://www.doctrine-project.org/2022/11/04/annotations-to-attributes.html):
 
-1. **Install Rector:**
+1. **Install Rector and Doctrine rules:**
    ```bash
-   composer require --dev rector/rector
+   composer require --dev rector/rector rector/rector-doctrine
    ```
 
 2. **Download the migration config:**
@@ -77,6 +77,11 @@ The easiest way to migrate is using [Rector](https://getrector.com/), inspired b
    vendor/bin/rector process --config=rector-migrate.php
    ```
 
+   This will automatically:
+   - Convert Doctrine annotations to PHP 8 attributes (`@Route` → `#[Route]`)
+   - Replace `Reader` with `AttributeReaderInterface`
+   - Replace `DualReader` with `AttributeReader`
+
 4. **Review and test:**
    - Review the changes made by Rector
    - Run your tests to ensure everything works
@@ -84,9 +89,11 @@ The easiest way to migrate is using [Rector](https://getrector.com/), inspired b
 
 5. **Clean up (optional):**
    ```bash
-   composer remove --dev rector/rector
+   composer remove --dev rector/rector rector/rector-doctrine
    rm rector-migrate.php
    ```
+
+**Reference:** See [Doctrine's annotations-to-attributes migration guide](https://www.doctrine-project.org/2022/11/04/annotations-to-attributes.html) for more details on annotation conversion.
 
 ### Manual Migration
 
