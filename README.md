@@ -130,3 +130,47 @@ If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can mi
 ```
 
 For most users (those consuming the interface, not implementing it), your existing code continues to work without changes.
+
+## For Library Authors
+
+If you're maintaining a library that depends on `koriym/attributes`, **you MUST bump your library's major version** when migrating from 1.x to 2.x.
+
+### Why?
+
+Version 2.x removes Doctrine Annotations support. When your library updates from `^1.0` to `^2.0`:
+
+```json
+// Your library's composer.json
+{
+  "require": {
+-   "koriym/attributes": "^1.0"
++   "koriym/attributes": "^2.0"
+  }
+}
+```
+
+**Your users' annotation code will silently stop working:**
+
+```php
+// Your users' code
+/**
+ * @Route("/api")  // ← This will be ignored in 2.x
+ */
+class MyController {}
+```
+
+### Correct Approach
+
+1. **Bump your library's major version** (e.g., 3.0 → 4.0)
+2. **Document the breaking change** in your CHANGELOG
+3. **Guide your users** to migrate annotations to attributes
+4. **Consider providing Rector rules** for your users' migration
+
+### Version Strategy
+
+```
+Your Library 3.x → Uses koriym/attributes ^1.0 (supports annotations + attributes)
+Your Library 4.x → Uses koriym/attributes ^2.0 (supports attributes only)
+```
+
+This allows your users to explicitly choose when to migrate by selecting your library's version.

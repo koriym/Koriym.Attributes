@@ -12,5 +12,8 @@
     <include>
       <directory suffix=".php">src</directory>
     </include>
+    <exclude>
+      <file>src/Installer.php</file>
+    </exclude>
   </source>
 </phpunit>
