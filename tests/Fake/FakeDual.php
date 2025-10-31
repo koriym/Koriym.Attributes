@@ -34,7 +34,7 @@ class FakeDual
      */
     #[FakeInject]
     #[FakeFooClass]
-    public function setKey(string $authKey): void // named binding
+    public function setKey(#[FakeInject] string $authKey): void // named binding
     {
     }
 
@@ -46,7 +46,7 @@ class FakeDual
     #[FakeTransactional]
     #[FakeLoggable]
     #[FakeHttpCache(isPrivate: true, maxAge: 50)]
-    public function subscribe(string $id): void  // intercepted
+    public function subscribe(#[FakeLoggable] #[FakeInject] string $id): void  // intercepted
     {
     }
 }

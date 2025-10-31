@@ -7,6 +7,7 @@ namespace Koriym\Attributes;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
 
 final class AttributeReader implements AttributeReaderInterface
@@ -94,6 +95,35 @@ final class AttributeReader implements AttributeReaderInterface
     public function getPropertyAnnotation(ReflectionProperty $property, string $annotationName): object|null
     {
         $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
+        if (isset($attributes[0])) {
+            return $attributes[0]->newInstance();
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParameterAnnotations(ReflectionParameter $param): array
+    {
+        $attributes = $param->getAttributes();
+        $instances = [];
+        foreach ($attributes as $attribute) {
+            $instances[] = $attribute->newInstance();
+        }
+
+        return $instances;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @template T of object
+     */
+    public function getParameterAnnotation(ReflectionParameter $param, string $annotation): object|null
+    {
+        $attributes = $param->getAttributes($annotation);
         if (isset($attributes[0])) {
             return $attributes[0]->newInstance();
         }

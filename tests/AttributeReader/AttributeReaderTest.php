@@ -16,6 +16,7 @@ use Koriym\Attributes\Tests\Fake\FakeDual;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
 
 use function array_map;
@@ -34,6 +35,9 @@ final class AttributeReaderTest extends TestCase
     /** @var ReflectionProperty */
     private $reflectionProperty;
 
+    /** @var ReflectionParameter */
+    private $reflectionParameter;
+
     protected function setUp(): void
     {
         $this->attributeReader = new AttributeReader();
@@ -41,6 +45,7 @@ final class AttributeReaderTest extends TestCase
         $this->reflectionClass = new ReflectionClass(FakeDual::class);
         $this->reflectionMethod = new ReflectionMethod(FakeDual::class, 'subscribe');
         $this->reflectionProperty = new ReflectionProperty(FakeDual::class, 'prop');
+        $this->reflectionParameter = new ReflectionParameter([FakeDual::class, 'subscribe'], 'id');
     }
 
     public function testClass(): void
@@ -96,6 +101,22 @@ final class AttributeReaderTest extends TestCase
         $this->assertEqualsCanonicalizing($expectedAttributeClasses, $foundAttributeClasses);
     }
 
+    public function testParameter(): void
+    {
+        $foundAttribute = $this->attributeReader->getParameterAnnotation($this->reflectionParameter, FakeLoggable::class);
+        $this->assertInstanceOf(FakeLoggable::class, $foundAttribute);
+    }
+
+    public function testParameters(): void
+    {
+        $foundAttributes = $this->attributeReader->getParameterAnnotations($this->reflectionParameter);
+
+        $foundAttributeClasses = $this->resolveAttributeClasses($foundAttributes);
+        $expectedAttributeClasses = [FakeLoggable::class, FakeInject::class];
+
+        $this->assertEqualsCanonicalizing($expectedAttributeClasses, $foundAttributeClasses);
+    }
+
     public function testMissingAnnotations(): void
     {
         $this->assertNull($this->attributeReader->getClassAnnotation($this->reflectionClass, FakeNotExists::class));
@@ -106,6 +127,8 @@ final class AttributeReaderTest extends TestCase
         ));
 
         $this->assertNull($this->attributeReader->getPropertyAnnotation($this->reflectionProperty, FakeNotExists::class));
+
+        $this->assertNull($this->attributeReader->getParameterAnnotation($this->reflectionParameter, FakeNotExists::class));
     }
 
     /**

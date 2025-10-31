@@ -6,6 +6,7 @@ namespace Koriym\Attributes;
 
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionParameter;
 use ReflectionProperty;
 
 interface AttributeReaderInterface
@@ -66,4 +67,27 @@ interface AttributeReaderInterface
      * @template T of object
      */
     public function getPropertyAnnotation(ReflectionProperty $property, string $annotationName): object|null;
+
+    /**
+     * Gets the attributes applied to a method parameter.
+     *
+     * @param ReflectionParameter $param The ReflectionParameter of the parameter
+     *                                   from which the attributes should be read.
+     *
+     * @return array<object> An array of Annotations/Attributes.
+     */
+    public function getParameterAnnotations(ReflectionParameter $param): array;
+
+    /**
+     * Gets a method parameter attribute
+     *
+     * @param ReflectionParameter $param      The ReflectionParameter of the parameter
+     *                                        from which the attributes should be read.
+     * @param class-string<T>     $annotation
+     *
+     * @return T|null The Annotation/Attribute or NULL, if the requested annotation does not exist.
+     *
+     * @template T of object
+     */
+    public function getParameterAnnotation(ReflectionParameter $param, string $annotation): object|null;
 }
