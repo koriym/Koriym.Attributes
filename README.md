@@ -56,6 +56,10 @@ $specificAttribute = $reader->getMethodAnnotation($reflection, MyAttribute::clas
 // Read property attributes
 $propertyAttributes = $reader->getPropertyAnnotations($reflection);
 $specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::class);
+
+// Read parameter attributes
+$parameterAttributes = $reader->getParameterAnnotations($reflection);
+$specificAttribute = $reader->getParameterAnnotation($reflection, MyAttribute::class);
 ```
 
 ## Migration Guide

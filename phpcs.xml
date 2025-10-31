@@ -40,7 +40,6 @@
         <exclude name="SlevomatCodingStandard.PHP.RequireExplicitAssertion.RequiredExplicitAssertion"/>
         <exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall.MissingTrailingComma"/>
         <exclude name="SlevomatCodingStandard.TypeHints.UnionTypeHintFormat"/>
-        <exclude name="Squiz.WhiteSpace.LanguageConstructSpacing"/>
     </rule>
 
     <!-- Additional Rules -->
