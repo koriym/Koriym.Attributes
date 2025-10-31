@@ -36,13 +36,13 @@ final class ReadingAbstractAttributeTest extends TestCase
 
     public function testClassAttribute(): void
     {
-        $classAttribute = $this->attributeReader->getClassAnnotation($this->reflectionClass, FakeAbstractFoo::class);
+        $classAttribute = $this->attributeReader->getClassAttribute($this->reflectionClass, FakeAbstractFoo::class);
         $this->assertInstanceOf(FakeAbstractFoo::class, $classAttribute);
     }
 
     public function testMethodAttribute(): void
     {
-        $methodAttribute = $this->attributeReader->getMethodAnnotation(
+        $methodAttribute = $this->attributeReader->getMethodAttribute(
             $this->methodReflection,
             FakeAbstractFoo::class
         );
@@ -51,7 +51,7 @@ final class ReadingAbstractAttributeTest extends TestCase
 
     public function testPropertyAttribute(): void
     {
-        $propertyAttribute = $this->attributeReader->getPropertyAnnotation($this->propertyReflection, FakeAbstractFoo::class);
+        $propertyAttribute = $this->attributeReader->getPropertyAttribute($this->propertyReflection, FakeAbstractFoo::class);
         $this->assertInstanceOf(FakeAbstractFoo::class, $propertyAttribute);
     }
 }

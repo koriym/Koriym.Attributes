@@ -38,19 +38,19 @@ final class ReadingInterfaceTest extends TestCase
 
     public function testClassAttribute(): void
     {
-        $classAttribute = $this->attributeReader->getClassAnnotation($this->reflectionClass, FakeFooInterface::class);
+        $classAttribute = $this->attributeReader->getClassAttribute($this->reflectionClass, FakeFooInterface::class);
         $this->assertInstanceOf(FakeFooClass::class, $classAttribute);
     }
 
     public function testReadIneterfaceInMethod(): void
     {
-        $methodAttribute = $this->attributeReader->getMethodAnnotation($this->reflectionMethod, FakeFooInterface::class);
+        $methodAttribute = $this->attributeReader->getMethodAttribute($this->reflectionMethod, FakeFooInterface::class);
         $this->assertInstanceOf(FakeFooClass::class, $methodAttribute);
     }
 
     public function testPropertyAttribute(): void
     {
-        $propertyAttribute = $this->attributeReader->getPropertyAnnotation($this->reflectionProperty, FakeFooInterface::class);
+        $propertyAttribute = $this->attributeReader->getPropertyAttribute($this->reflectionProperty, FakeFooInterface::class);
         $this->assertInstanceOf(FakeFooClass::class, $propertyAttribute);
     }
 }
