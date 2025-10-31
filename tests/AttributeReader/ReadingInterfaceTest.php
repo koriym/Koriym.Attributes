@@ -13,7 +13,6 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/** @requires PHP >= 8.0 */
 final class ReadingInterfaceTest extends TestCase
 {
     /** @var AttributeReader */

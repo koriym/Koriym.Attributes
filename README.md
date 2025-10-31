@@ -6,76 +6,171 @@
 ![Static Analysis](https://github.com/koriym/Koriym.Attributes/workflows/Static%20Analysis/badge.svg)
 ![Coding Standards](https://github.com/koriym/Koriym.Attributes/workflows/Coding%20Standards/badge.svg)
 
-A `koriym/attributes` dual reader implements doctrine/annotation [Reader](https://github.com/doctrine/annotations/blob/master/lib/Doctrine/Common/Annotations/Reader.php) interface
-in order to read both doctrine/annotation and PHP 8 attributes.
+A PHP 8 attribute reader that provides a familiar interface compatible with the `doctrine/annotations` Reader pattern.
 
-Doctrine annotations are different by design than PHP core one. 
-Not all attributes can be read by this reader (ex. parameters), and not all doctrine/annotations can be read by this reader either. (ex. nested annotations)
+## Why use this library?
 
-However, This reader help you to code forward compatible that supports both PHP 7.x annotations and 8.x attributes in certain senario.
+This library serves two purposes:
+
+**1. Migration tool** - The `doctrine/annotations` library has been [abandoned](https://github.com/doctrine/annotations) as PHP 8 introduced native attributes. This library provides a smooth migration path from Doctrine Annotations to native PHP 8 attributes with minimal code changes.
+
+**2. Architectural pattern** - Provides an abstraction layer for dependency injection, testability, and extensibility. Your code depends on `AttributeReaderInterface`, not directly on PHP's Reflection API.
+
+### What's new in 2.x?
+
+- Removed `doctrine/annotations` dependency (no longer needed)
+- Removed `DualReader` class (PHP 8+ only)
+- Requires PHP 8.1+ (taking full advantage of native attributes)
+- Modern type hints with union types
 
 ## Installation
 
-    composer require koriym/attributes
+    composer require koriym/attributes ^2.0
+
+## Requirements
+
+- PHP 8.1 or later
 
 ## Usage
 
-Create the reader instance.
+Create an `AttributeReader` instance:
 
 ```php
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\Reader;
-use Koriym\Attributes\DualReader;
 use Koriym\Attributes\AttributeReader;
+use Koriym\Attributes\AttributeReaderInterface;
 
-$reader = new DualReader(
-    new AnnotationReader(),
-    new AttributeReader()
-);
-assert($reader instanceof Reader);
+$reader = new AttributeReader();
 ```
 
-The reader can read both annotations and attributes.
+The reader provides methods for reading PHP 8 attributes with the familiar Reader interface:
 
-## Compatible Annotation
+```php
+// Read class attributes
+$classAttributes = $reader->getClassAnnotations($reflection);
+$specificAttribute = $reader->getClassAnnotation($reflection, MyAttribute::class);
 
-Existing doctrine annotations can be changed into annotations that work for both doctrine annotation and PHP8 attributes.
+// Read method attributes
+$methodAttributes = $reader->getMethodAnnotations($reflection);
+$specificAttribute = $reader->getMethodAnnotation($reflection, MyAttribute::class);
 
-Add `#[Attribute]` attribute.
+// Read property attributes
+$propertyAttributes = $reader->getPropertyAnnotations($reflection);
+$specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::class);
+```
+
+## Migration Guide
+
+### Automated Migration with Rector
+
+The easiest way to migrate is using [Rector](https://getrector.com/), following [Doctrine's migration approach](https://www.doctrine-project.org/2022/11/04/annotations-to-attributes.html):
+
+1. **Install Rector and Doctrine rules:**
+   ```bash
+   composer require --dev rector/rector rector/rector-doctrine
+   ```
+
+2. **Download the migration config:**
+   ```bash
+   curl -O https://raw.githubusercontent.com/koriym/Koriym.Attributes/2.x/rector-migrate.php
+   ```
+
+3. **Run the migration:**
+   ```bash
+   vendor/bin/rector process --config=rector-migrate.php
+   ```
+
+   This will automatically:
+   - Convert Doctrine annotations to PHP 8 attributes (`@Route` → `#[Route]`)
+   - Replace `Reader` with `AttributeReaderInterface`
+   - Replace `DualReader` with `AttributeReader`
+
+4. **Review and test:**
+   - Review the changes made by Rector
+   - Run your tests to ensure everything works
+   - If you have custom `AttributeReaderInterface` implementations, manually add `string` type to `$annotationName` parameters
+
+5. **Clean up (optional):**
+   ```bash
+   composer remove --dev rector/rector rector/rector-doctrine
+   rm rector-migrate.php
+   ```
+
+**Reference:** See [Doctrine's annotations-to-attributes migration guide](https://www.doctrine-project.org/2022/11/04/annotations-to-attributes.html) for more details on annotation conversion.
+
+### Manual Migration
+
+If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can migrate manually:
 
 ```diff
-use Attribute;
+-use Doctrine\Common\Annotations\Reader;
++use Koriym\Attributes\AttributeReaderInterface;
 
-/** @Annotation */
-+#[Attribute]
-final class Foo
+-public function __construct(Reader $reader)
++public function __construct(AttributeReaderInterface $reader)
 {
+    $this->reader = $reader;
 }
 ```
 
-Then add constructor when annotation has properties.
-Following example works with both PHP8 attribute and `doctrine/annotations`.
+**If you have custom implementations** of the reader interface, add explicit `string` type:
 
 ```diff
-use Attribute;
-+use Doctrine\Common\Annotations\NamedArgumentConstructor;
+ use Koriym\Attributes\AttributeReaderInterface;
 
+ class MyCustomReader implements AttributeReaderInterface
+ {
+-    public function getClassAnnotation(ReflectionClass $class, $annotationName): object|null
++    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null
+     {
+         // your implementation
+     }
+
++    // Same for getMethodAnnotation() and getPropertyAnnotation()
+ }
+```
+
+For most users (those consuming the interface, not implementing it), your existing code continues to work without changes.
+
+## For Library Authors
+
+If you're maintaining a library that depends on `koriym/attributes`, **you MUST bump your library's major version** when migrating from 1.x to 2.x.
+
+### Why?
+
+Version 2.x removes Doctrine Annotations support. When your library updates from `^1.0` to `^2.0`:
+
+```json
+// Your library's composer.json
+{
+  "require": {
+-   "koriym/attributes": "^1.0"
++   "koriym/attributes": "^2.0"
+  }
+}
+```
+
+**Your users' annotation code will silently stop working:**
+
+```php
+// Your users' code
 /**
- * @Annotation 
- * @Target("METHOD")
-+* @NamedArgumentConstructor
+ * @Route("/api")  // ← This will be ignored in 2.x
  */
-+#[Attribute(Attribute::TARGET_METHOD)]
-final class Foo
-{
-    public string $bar;
-    public int $baz;
-+    public function __construct(string $bar = '', int $baz = 0)
-+    {
-+        $this->bar = $bar;
-+        $this->baz = $baz;
-+    }
-}
+class MyController {}
 ```
 
-See more about annotation compatible attribute at [Constructors with Named Parameters](https://github.com/doctrine/annotations/blob/1.11.x/docs/en/custom.rst#optional-constructors-with-named-parameters)
+### Correct Approach
+
+1. **Bump your library's major version** (e.g., 3.0 → 4.0)
+2. **Document the breaking change** in your CHANGELOG
+3. **Guide your users** to migrate annotations to attributes
+4. **Consider providing Rector rules** for your users' migration
+
+### Version Strategy
+
+```
+Your Library 3.x → Uses koriym/attributes ^1.0 (supports annotations + attributes)
+Your Library 4.x → Uses koriym/attributes ^2.0 (supports attributes only)
+```
+
+This allows your users to explicitly choose when to migrate by selecting your library's version.

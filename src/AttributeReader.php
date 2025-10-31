@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Koriym\Attributes;
 
-use Doctrine\Common\Annotations\Reader;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
-/** @see \Koriym\Attributes\AttributeReaderTest */
-final class AttributeReader implements Reader
+final class AttributeReader implements AttributeReaderInterface
 {
     /**
      * {@inheritDoc}
@@ -45,41 +43,30 @@ final class AttributeReader implements Reader
     }
 
     /**
-     * @param ReflectionClass<object> $class
-     * @param class-string<T>         $annotationName
-     *
-     * @return T|null
+     * {@inheritDoc}
      *
      * @template T of object
      */
-    public function getClassAnnotation(ReflectionClass $class, $annotationName): ?object
+    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null
     {
         $attributes = $class->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
-            /** @var T $object */
-            $object = $attributes[0]->newInstance();
-
-            return $object;
+            return $attributes[0]->newInstance();
         }
 
         return null;
     }
 
     /**
-     * @param class-string<T> $annotationName
-     *
-     * @return T|null
+     * {@inheritDoc}
      *
      * @template T of object
      */
-    public function getMethodAnnotation(ReflectionMethod $method, $annotationName): ?object
+    public function getMethodAnnotation(ReflectionMethod $method, string $annotationName): object|null
     {
         $attributes = $method->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
-            /** @var T $object */
-            $object = $attributes[0]->newInstance();
-
-            return $object;
+            return $attributes[0]->newInstance();
         }
 
         return null;
@@ -100,13 +87,11 @@ final class AttributeReader implements Reader
     }
 
     /**
-     * @param class-string<T> $annotationName
-     *
-     * @return T|null
+     * {@inheritDoc}
      *
      * @template T of object
      */
-    public function getPropertyAnnotation(ReflectionProperty $property, $annotationName): ?object
+    public function getPropertyAnnotation(ReflectionProperty $property, string $annotationName): object|null
     {
         $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
