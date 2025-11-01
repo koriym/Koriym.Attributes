@@ -42,24 +42,24 @@ use Koriym\Attributes\AttributeReaderInterface;
 $reader = new AttributeReader();
 ```
 
-The reader provides methods for reading PHP 8 attributes with the familiar Reader interface:
+The reader provides methods for reading PHP 8 attributes:
 
 ```php
 // Read class attributes
-$classAttributes = $reader->getClassAnnotations($reflection);
-$specificAttribute = $reader->getClassAnnotation($reflection, MyAttribute::class);
+$classAttributes = $reader->getClassAttributes($reflection);
+$specificAttribute = $reader->getClassAttribute($reflection, MyAttribute::class);
 
 // Read method attributes
-$methodAttributes = $reader->getMethodAnnotations($reflection);
-$specificAttribute = $reader->getMethodAnnotation($reflection, MyAttribute::class);
+$methodAttributes = $reader->getMethodAttributes($reflection);
+$specificAttribute = $reader->getMethodAttribute($reflection, MyAttribute::class);
 
 // Read property attributes
-$propertyAttributes = $reader->getPropertyAnnotations($reflection);
-$specificAttribute = $reader->getPropertyAnnotation($reflection, MyAttribute::class);
+$propertyAttributes = $reader->getPropertyAttributes($reflection);
+$specificAttribute = $reader->getPropertyAttribute($reflection, MyAttribute::class);
 
 // Read parameter attributes
-$parameterAttributes = $reader->getParameterAnnotations($reflection);
-$specificAttribute = $reader->getParameterAnnotation($reflection, MyAttribute::class);
+$parameterAttributes = $reader->getParameterAttributes($reflection);
+$specificAttribute = $reader->getParameterAttribute($reflection, MyAttribute::class);
 ```
 
 ## Migration Guide
@@ -116,24 +116,24 @@ If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can mi
 }
 ```
 
-**If you have custom implementations** of the reader interface, add explicit `string` type:
+**If you have custom implementations** of the reader interface, update method names:
 
 ```diff
  use Koriym\Attributes\AttributeReaderInterface;
 
  class MyCustomReader implements AttributeReaderInterface
  {
--    public function getClassAnnotation(ReflectionClass $class, $annotationName): object|null
-+    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null
+-    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null
++    public function getClassAttribute(ReflectionClass $class, string $attributeName): object|null
      {
          // your implementation
      }
 
-+    // Same for getMethodAnnotation() and getPropertyAnnotation()
++    // Same for getMethodAttribute() and getPropertyAttribute()
  }
 ```
 
-For most users (those consuming the interface, not implementing it), your existing code continues to work without changes.
+For most users (those consuming the interface, not implementing it), you need to update method calls from `getXxxAnnotation()` to `getXxxAttribute()`.
 
 ## For Library Authors
 

@@ -15,23 +15,7 @@ final class AttributeReader implements AttributeReaderInterface
     /**
      * {@inheritDoc}
      */
-    public function getMethodAnnotations(ReflectionMethod $method): array
-    {
-        $attributesRefs = $method->getAttributes();
-        $attributes = [];
-        foreach ($attributesRefs as $ref) {
-            $attributes[] = $ref->newInstance();
-        }
-
-        return $attributes;
-    }
-
-    /**
-     * @param ReflectionClass<object> $class
-     *
-     * @return array<object>
-     */
-    public function getClassAnnotations(ReflectionClass $class): array
+    public function getClassAttributes(ReflectionClass $class): array
     {
         $attributesRefs = $class->getAttributes();
         $attributes = [];
@@ -48,14 +32,28 @@ final class AttributeReader implements AttributeReaderInterface
      *
      * @template T of object
      */
-    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null
+    public function getClassAttribute(ReflectionClass $class, string $attributeName): object|null
     {
-        $attributes = $class->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
+        $attributes = $class->getAttributes($attributeName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
             return $attributes[0]->newInstance();
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMethodAttributes(ReflectionMethod $method): array
+    {
+        $attributesRefs = $method->getAttributes();
+        $attributes = [];
+        foreach ($attributesRefs as $ref) {
+            $attributes[] = $ref->newInstance();
+        }
+
+        return $attributes;
     }
 
     /**
@@ -63,9 +61,9 @@ final class AttributeReader implements AttributeReaderInterface
      *
      * @template T of object
      */
-    public function getMethodAnnotation(ReflectionMethod $method, string $annotationName): object|null
+    public function getMethodAttribute(ReflectionMethod $method, string $attributeName): object|null
     {
-        $attributes = $method->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
+        $attributes = $method->getAttributes($attributeName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
             return $attributes[0]->newInstance();
         }
@@ -76,7 +74,7 @@ final class AttributeReader implements AttributeReaderInterface
     /**
      * {@inheritDoc}
      */
-    public function getPropertyAnnotations(ReflectionProperty $property): array
+    public function getPropertyAttributes(ReflectionProperty $property): array
     {
         $attributesRefs = $property->getAttributes();
         $attributes = [];
@@ -92,9 +90,9 @@ final class AttributeReader implements AttributeReaderInterface
      *
      * @template T of object
      */
-    public function getPropertyAnnotation(ReflectionProperty $property, string $annotationName): object|null
+    public function getPropertyAttribute(ReflectionProperty $property, string $attributeName): object|null
     {
-        $attributes = $property->getAttributes($annotationName, ReflectionAttribute::IS_INSTANCEOF);
+        $attributes = $property->getAttributes($attributeName, ReflectionAttribute::IS_INSTANCEOF);
         if (isset($attributes[0])) {
             return $attributes[0]->newInstance();
         }
@@ -105,7 +103,7 @@ final class AttributeReader implements AttributeReaderInterface
     /**
      * {@inheritDoc}
      */
-    public function getParameterAnnotations(ReflectionParameter $param): array
+    public function getParameterAttributes(ReflectionParameter $param): array
     {
         $attributes = $param->getAttributes();
         $instances = [];
@@ -121,9 +119,9 @@ final class AttributeReader implements AttributeReaderInterface
      *
      * @template T of object
      */
-    public function getParameterAnnotation(ReflectionParameter $param, string $annotation): object|null
+    public function getParameterAttribute(ReflectionParameter $param, string $attributeName): object|null
     {
-        $attributes = $param->getAttributes($annotation);
+        $attributes = $param->getAttributes($attributeName);
         if (isset($attributes[0])) {
             return $attributes[0]->newInstance();
         }

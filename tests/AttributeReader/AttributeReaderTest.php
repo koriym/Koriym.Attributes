@@ -50,13 +50,13 @@ final class AttributeReaderTest extends TestCase
 
     public function testClass(): void
     {
-        $foundAttributes = $this->attributeReader->getClassAnnotation($this->reflectionClass, FakeCacheable::class);
+        $foundAttributes = $this->attributeReader->getClassAttribute($this->reflectionClass, FakeCacheable::class);
         $this->assertInstanceOf(FakeCacheable::class, $foundAttributes);
     }
 
     public function testClasses(): void
     {
-        $foundAttributes = $this->attributeReader->getClassAnnotations($this->reflectionClass);
+        $foundAttributes = $this->attributeReader->getClassAttributes($this->reflectionClass);
 
         $foundAttributeClasses = array_map(static function (object $attribute): string {
             return $attribute::class;
@@ -68,7 +68,7 @@ final class AttributeReaderTest extends TestCase
 
     public function testMethod(): void
     {
-        $foundAttribute = $this->attributeReader->getMethodAnnotation(
+        $foundAttribute = $this->attributeReader->getMethodAttribute(
             $this->reflectionMethod,
             FakeHttpCache::class
         );
@@ -77,7 +77,7 @@ final class AttributeReaderTest extends TestCase
 
     public function testMethods(): void
     {
-        $foundAttributes = $this->attributeReader->getMethodAnnotations($this->reflectionMethod);
+        $foundAttributes = $this->attributeReader->getMethodAttributes($this->reflectionMethod);
 
         $foundAttributeClasses = $this->resolveAttributeClasses($foundAttributes);
         $expectedAttributeClasses = [FakeLoggable::class, FakeHttpCache::class, FakeTransactional::class];
@@ -87,13 +87,13 @@ final class AttributeReaderTest extends TestCase
 
     public function testProperty(): void
     {
-        $foundAttribute = $this->attributeReader->getPropertyAnnotation($this->reflectionProperty, FakeInject::class);
+        $foundAttribute = $this->attributeReader->getPropertyAttribute($this->reflectionProperty, FakeInject::class);
         $this->assertInstanceOf(FakeInject::class, $foundAttribute);
     }
 
     public function testProperties(): void
     {
-        $foundAttributes = $this->attributeReader->getPropertyAnnotations($this->reflectionProperty);
+        $foundAttributes = $this->attributeReader->getPropertyAttributes($this->reflectionProperty);
 
         $foundAttributeClasses = $this->resolveAttributeClasses($foundAttributes);
         $expectedAttributeClasses = [FakeInject::class, FakeFooClass::class];
@@ -103,13 +103,13 @@ final class AttributeReaderTest extends TestCase
 
     public function testParameter(): void
     {
-        $foundAttribute = $this->attributeReader->getParameterAnnotation($this->reflectionParameter, FakeLoggable::class);
+        $foundAttribute = $this->attributeReader->getParameterAttribute($this->reflectionParameter, FakeLoggable::class);
         $this->assertInstanceOf(FakeLoggable::class, $foundAttribute);
     }
 
     public function testParameters(): void
     {
-        $foundAttributes = $this->attributeReader->getParameterAnnotations($this->reflectionParameter);
+        $foundAttributes = $this->attributeReader->getParameterAttributes($this->reflectionParameter);
 
         $foundAttributeClasses = $this->resolveAttributeClasses($foundAttributes);
         $expectedAttributeClasses = [FakeLoggable::class, FakeInject::class];
@@ -119,16 +119,16 @@ final class AttributeReaderTest extends TestCase
 
     public function testMissingAnnotations(): void
     {
-        $this->assertNull($this->attributeReader->getClassAnnotation($this->reflectionClass, FakeNotExists::class));
+        $this->assertNull($this->attributeReader->getClassAttribute($this->reflectionClass, FakeNotExists::class));
 
-        $this->assertNull($this->attributeReader->getMethodAnnotation(
+        $this->assertNull($this->attributeReader->getMethodAttribute(
             $this->reflectionMethod,
             FakeNotExists::class
         ));
 
-        $this->assertNull($this->attributeReader->getPropertyAnnotation($this->reflectionProperty, FakeNotExists::class));
+        $this->assertNull($this->attributeReader->getPropertyAttribute($this->reflectionProperty, FakeNotExists::class));
 
-        $this->assertNull($this->attributeReader->getParameterAnnotation($this->reflectionParameter, FakeNotExists::class));
+        $this->assertNull($this->attributeReader->getParameterAttribute($this->reflectionParameter, FakeNotExists::class));
     }
 
     /**

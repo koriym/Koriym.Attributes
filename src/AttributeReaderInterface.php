@@ -12,61 +12,61 @@ use ReflectionProperty;
 interface AttributeReaderInterface
 {
     /**
-     * Gets the annotations applied to a class.
+     * Gets the attributes applied to a class.
      *
      * @param ReflectionClass<object> $class
      *
      * @return array<object>
      */
-    public function getClassAnnotations(ReflectionClass $class): array;
+    public function getClassAttributes(ReflectionClass $class): array;
 
     /**
-     * Gets a class annotation.
+     * Gets a class attribute.
      *
      * @param ReflectionClass<object> $class
-     * @param class-string<T>         $annotationName
+     * @param class-string<T>         $attributeName
      *
      * @return T|null
      *
      * @template T of object
      */
-    public function getClassAnnotation(ReflectionClass $class, string $annotationName): object|null;
+    public function getClassAttribute(ReflectionClass $class, string $attributeName): object|null;
 
     /**
-     * Gets the annotations applied to a method.
+     * Gets the attributes applied to a method.
      *
      * @return array<object>
      */
-    public function getMethodAnnotations(ReflectionMethod $method): array;
+    public function getMethodAttributes(ReflectionMethod $method): array;
 
     /**
-     * Gets a method annotation.
+     * Gets a method attribute.
      *
-     * @param class-string<T> $annotationName
+     * @param class-string<T> $attributeName
      *
      * @return T|null
      *
      * @template T of object
      */
-    public function getMethodAnnotation(ReflectionMethod $method, string $annotationName): object|null;
+    public function getMethodAttribute(ReflectionMethod $method, string $attributeName): object|null;
 
     /**
-     * Gets the annotations applied to a property.
+     * Gets the attributes applied to a property.
      *
      * @return array<object>
      */
-    public function getPropertyAnnotations(ReflectionProperty $property): array;
+    public function getPropertyAttributes(ReflectionProperty $property): array;
 
     /**
-     * Gets a property annotation.
+     * Gets a property attribute.
      *
-     * @param class-string<T> $annotationName
+     * @param class-string<T> $attributeName
      *
      * @return T|null
      *
      * @template T of object
      */
-    public function getPropertyAnnotation(ReflectionProperty $property, string $annotationName): object|null;
+    public function getPropertyAttribute(ReflectionProperty $property, string $attributeName): object|null;
 
     /**
      * Gets the attributes applied to a method parameter.
@@ -76,18 +76,18 @@ interface AttributeReaderInterface
      *
      * @return array<object> An array of Annotations/Attributes.
      */
-    public function getParameterAnnotations(ReflectionParameter $param): array;
+    public function getParameterAttributes(ReflectionParameter $param): array;
 
     /**
      * Gets a method parameter attribute
      *
-     * @param ReflectionParameter $param      The ReflectionParameter of the parameter
-     *                                        from which the attributes should be read.
-     * @param class-string<T>     $annotation
+     * @param ReflectionParameter $param         The ReflectionParameter of the parameter
+     *                                           from which the attributes should be read.
+     * @param class-string<T>     $attributeName
      *
      * @return T|null The Annotation/Attribute or NULL, if the requested annotation does not exist.
      *
      * @template T of object
      */
-    public function getParameterAnnotation(ReflectionParameter $param, string $annotation): object|null;
+    public function getParameterAttribute(ReflectionParameter $param, string $attributeName): object|null;
 }
