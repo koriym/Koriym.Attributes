@@ -10,22 +10,34 @@ A PHP 8 attribute reader that provides a familiar interface compatible with the 
 
 ## Why use this library?
 
+**Background:** The `doctrine/annotations` library is [officially abandoned and no longer maintained](https://github.com/doctrine/annotations). Doctrine recommends migrating to native PHP 8 attributes.
+
 This library serves two purposes:
 
-**1. Migration tool** - The `doctrine/annotations` library has been [abandoned](https://github.com/doctrine/annotations) as PHP 8 introduced native attributes. This library provides a smooth migration path from Doctrine Annotations to native PHP 8 attributes with minimal code changes.
+**1. Migration tool** - Provides a smooth migration path from Doctrine Annotations to native PHP 8 attributes with minimal code changes. Compatible with the familiar `Reader` interface pattern.
 
 **2. Architectural pattern** - Provides an abstraction layer for dependency injection, testability, and extensibility. Your code depends on `AttributeReaderInterface`, not directly on PHP's Reflection API.
 
 ### What's new in 2.x?
 
-- Removed `doctrine/annotations` dependency (no longer needed)
-- Removed `DualReader` class (PHP 8+ only)
-- Requires PHP 8.1+ (taking full advantage of native attributes)
-- Modern type hints with union types
+**⚠️ Breaking Changes:**
+- Removed `doctrine/annotations` dependency - Doctrine annotations are no longer supported
+- Removed `DualReader` class - PHP 8+ attributes only
+- Method names changed: `getXxxAnnotation()` → `getXxxAttribute()`
+- Requires PHP 8.1+ with modern type hints
+
+If you're upgrading from 1.x, see the Migration Guide below.
 
 ## Installation
 
-    composer require koriym/attributes ^2.0
+```bash
+composer require koriym/attributes ^2.0
+```
+
+**Note:** If you need to continue using Doctrine annotations, use version 1.x instead:
+```bash
+composer require koriym/attributes ^1.0
+```
 
 ## Requirements
 
@@ -87,11 +99,12 @@ The easiest way to migrate is using [Rector](https://getrector.com/), following 
    - Convert Doctrine annotations to PHP 8 attributes (`@Route` → `#[Route]`)
    - Replace `Reader` with `AttributeReaderInterface`
    - Replace `DualReader` with `AttributeReader`
+   - Rename methods: `getXxxAnnotation()` → `getXxxAttribute()`
 
 4. **Review and test:**
    - Review the changes made by Rector
    - Run your tests to ensure everything works
-   - If you have custom `AttributeReaderInterface` implementations, manually add `string` type to `$annotationName` parameters
+   - If you have custom `AttributeReaderInterface` implementations, verify method signatures
 
 5. **Clean up (optional):**
    ```bash
@@ -129,52 +142,8 @@ If your codebase currently uses `Doctrine\Common\Annotations\Reader`, you can mi
          // your implementation
      }
 
-+    // Same for getMethodAttribute() and getPropertyAttribute()
++    // Same for getMethodAttribute(), getPropertyAttribute(), and getParameterAttribute()
  }
 ```
 
 For most users (those consuming the interface, not implementing it), you need to update method calls from `getXxxAnnotation()` to `getXxxAttribute()`.
-
-## For Library Authors
-
-If you're maintaining a library that depends on `koriym/attributes`, **you MUST bump your library's major version** when migrating from 1.x to 2.x.
-
-### Why?
-
-Version 2.x removes Doctrine Annotations support. When your library updates from `^1.0` to `^2.0`:
-
-```json
-// Your library's composer.json
-{
-  "require": {
--   "koriym/attributes": "^1.0"
-+   "koriym/attributes": "^2.0"
-  }
-}
-```
-
-**Your users' annotation code will silently stop working:**
-
-```php
-// Your users' code
-/**
- * @Route("/api")  // ← This will be ignored in 2.x
- */
-class MyController {}
-```
-
-### Correct Approach
-
-1. **Bump your library's major version** (e.g., 3.0 → 4.0)
-2. **Document the breaking change** in your CHANGELOG
-3. **Guide your users** to migrate annotations to attributes
-4. **Consider providing Rector rules** for your users' migration
-
-### Version Strategy
-
-```
-Your Library 3.x → Uses koriym/attributes ^1.0 (supports annotations + attributes)
-Your Library 4.x → Uses koriym/attributes ^2.0 (supports attributes only)
-```
-
-This allows your users to explicitly choose when to migrate by selecting your library's version.
