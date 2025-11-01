@@ -4,4 +4,3 @@ parameters:
     - src
   excludePaths:
     - 'tests/Fake'
-    - 'src/Installer.php'

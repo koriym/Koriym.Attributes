@@ -28,8 +28,6 @@
         }
     },
     "scripts": {
-        "post-install-cmd": "Koriym\\Attributes\\Installer::postInstall",
-        "post-update-cmd": "Koriym\\Attributes\\Installer::postInstall",
         "bin": "echo 'bin not installed'",
         "test": "./vendor/bin/phpunit",
         "tests": ["@cs", "@test", "@sa"],
